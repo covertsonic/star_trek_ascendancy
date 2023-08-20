@@ -5,21 +5,44 @@
     <link rel="icon" href="/favicon/favicon.ico" type="image/x-icon">
     <link rel="manifest" href="/favicon/site.webmanifest">
     <link rel="apple-touch-icon" href="/favicon/apple-touch-icon.png">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link
     rel="stylesheet"
     href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-  />
+    />
 
     <title>Star Trek Ascendancy Apps</title>
   </head>
   <body>
-    <h1>Star Trek Ascendancy Apps</h1>
-    <ul>
-      <li>
-    <a href="dice_calculator/index.html">Combat Dice Calculator</a></li>
- <li><a href="turn_order/index.html">Turn Order Randomizer</a></li> 
+    <div class="container my-5">
+      <h1 class="text-center mb-4">Star Trek Ascendancy Apps</h1>
+      <p>This project is to streamline the board game, <a href="https://boardgamegeek.com/boardgame/193949/star-trek-ascendancy">Star Trek Ascendancy</a>, for activities that could be helped with a pretty calculator.</p>
+      
+      <table class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th>App</th>
+            <th>Brief</th>
+            <th>Why</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a href="dice_calculator/index.html">Combat Dice Calculator</a></td>
+            <td>Automated die rolling based on weapon and shield technology.*</td>
+            <td>During the late game, combat rolls can take up to 10 minutes.**</td>
+          </tr>
+          <tr>
+            <td><a href="turn_order/index.html">Turn Order Randomizer</a></td>
+            <td>Quickly create turn orders.</td>
+            <td>Handing out turn order cards takes an unnecessary 2 minutes per round, and turn order cards are often misplaced.</td>
+          </tr>
+        </tbody>
+      </table>
+      <p> <em>*Edge cases are not directly supported such as first strike, “always hit on 5’s &amp; 6’s”, starbases, and re-rolls; the app will allow you to manually edit the surviving ships at the end of each round so players can handle the nuances after the main rolls have completed.</em></p>
+      <p><em>**Combat slows down, especially in the Dominion War variant, when fleets of 20 vs 20 ships fight and each side has low die probabilities-to-hit and many special effects to modify rolls. This is especially challenging in games of 6 players where 4 players are stuck in spectator mode.</em></p>
+      <p class="text-center"><em>Hosting by and created with CodeSandbox.io.</em></p>
+    </div>
   </body>
 </html>
