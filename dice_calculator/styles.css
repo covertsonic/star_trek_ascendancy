@@ -1,0 +1,69 @@
+body {
+  font-family: "Trebuchet MS", sans-serif; /* Trebuchet feels somewhat sci-fi-ish, adjust to taste */
+}
+
+.default-die {
+  color: darkgrey;
+}
+
+.potential-hit {
+  border: 2px solid #000; /* Adjust as needed */
+  border-radius: 4px; /* Optional */
+}
+
+.rolled-die {
+  color: darkorange;
+}
+
+.successful-hit {
+  color: darkred;
+  border-color: darkred;
+}
+.hit-border {
+  border-color: darkred;
+}
+/* Star Trek Aesthetics */
+.card {
+  height: 200px; /* Set a fixed height */
+}
+
+.fa-stack-1x {
+  line-height: 1.5;
+}
+.big-num {
+  font-size: 36px;
+  display: block;
+  text-align: center;
+}
+/* New styles for buttons */
+.card button {
+  width: 40px;
+  margin: 2px;
+}
+
+.col-sm-6:not(:last-child) {
+  border-right: 1px solid #e0e0e0; /* Adding gentle line separating the attacker and defender */
+}
+
+/* Specific color and size styling for Ship/Weapon/Shield elements */
+.ship-icon,
+.ship-text {
+  color: #007bff;
+}
+
+.weapon-icon,
+.weapon-text {
+  color: red;
+}
+
+.shield-icon,
+.shield-text {
+  color: green;
+}
+
+.cardheadertext {
+  margin-left: 3px;
+  font-size: 0.6em;
+  color: #777;
+  font-weight: bold;
+}

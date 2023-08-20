@@ -1,0 +1,130 @@
+/* General Styles */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Player Count */
+.floating-player-count {
+  position: sticky;
+  top: 0;
+  background: #0a0a0a; /* Dark background */
+  color: #f0f0f0; /* Light text color */
+  padding: 10px;
+  z-index: 100;
+}
+.floating-player-count h2 {
+  margin-bottom: 0 !important; /* Remove the bottom margin */
+}
+.player-count {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.fas.fa-user-astronaut {
+  margin-right: 10px; /* Space between the icon and the text */
+}
+.player-number {
+  font-family: "Orbitron", sans-serif;
+}
+
+/* Faction Selection Grid */
+.factions-grid {
+  /* display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;*/
+}
+
+.faction {
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease;
+}
+.faction .card-img-top {
+  max-width: 100%; /* responsive image */
+  height: auto;
+}
+.faction .overlay,
+.faction .selected-banner {
+  transition: all 0.3s ease;
+}
+.faction .overlay {
+  background: rgba(255, 255, 255, 0.7); /* White color with 70% opacity */
+}
+
+.faction.active .overlay {
+  background: rgba(255, 255, 255, 0); /* remove the overlay when active */
+}
+
+.faction .selected-banner {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  opacity: 0;
+  display: flex; /* Use flex layout */
+  align-items: center; /* Vertically center content */
+}
+.faction.active .selected-banner {
+  opacity: 1;
+}
+
+/* Turn Order Section */
+
+.time-stamp {
+  font-size: 14px; /* Adjust as needed */
+  text-align: center;
+  color: #777; /* You can change the color if desired */
+  font-weight: normal !important;
+}
+
+/* table attempt */
+#turn-order-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#turn-order-table th,
+#turn-order-table td {
+  border: 1px solid #ddd;
+  text-align: center;
+  padding: 8px;
+  font-size: 1.7em;
+}
+
+#turn-order-table th {
+  line-height: 1 !important;
+}
+
+#turn-order-table td img {
+  width: 70px; /* Adjust size as needed */
+  height: auto;
+  margin-right: 10px;
+}
+.faction-name-column {
+  width: 250px;
+  white-space: nowrap;
+  text-align: left !important;
+}
+
+/* Buttons */
+.button-group-for-turn-order {
+  display: flex;
+  justify-content: space-between; /* To add some space between the buttons */
+  margin-top: 10px;
+}
+.btn.randomize-turn-order,
+.btn.return-to-selection,
+.btn.show-all-turns {
+  margin: 0; /* To override previous margin if needed */
+  margin: 10px;
+  display: block;
+}
+
+.hidden {
+  display: none;
+}
