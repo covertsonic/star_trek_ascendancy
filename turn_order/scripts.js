@@ -3,7 +3,7 @@
 
 //delete this section after debugging the turn order
 window.addEventListener("load", function () {
-  document.querySelector('[data-faction="Federation"]').click();
+  //document.querySelector('[data-faction="Federation"]').click();
   /*  document.querySelector('[data-faction="Romulan"]').click();
   document.querySelector('[data-faction="Klingon"]').click(); // Note: It should be Klingon if you've changed it
   setTimeout(function () {
@@ -199,7 +199,7 @@ function resetTableHeader() {
   // Create the new header row and cells
   const headerRow = document.createElement("tr");
   const headerCell = document.createElement("th");
-  headerCell.textContent = "Faction";
+  headerCell.textContent = "&nbsp;<br />Faction";
 
   // Append the cell to the row and the row to the thead
   headerRow.appendChild(headerCell);
