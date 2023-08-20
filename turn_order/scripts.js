@@ -199,7 +199,8 @@ function resetTableHeader() {
   // Create the new header row and cells
   const headerRow = document.createElement("tr");
   const headerCell = document.createElement("th");
-  headerCell.textContent = "&nbsp;<br />Faction";
+  headerCell.innerHTML = "&nbsp;<br />Faction";
+  headerCell.className = "faction-name-column";
 
   // Append the cell to the row and the row to the thead
   headerRow.appendChild(headerCell);
