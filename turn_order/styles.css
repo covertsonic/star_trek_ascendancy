@@ -6,28 +6,43 @@
 }
 
 /* Player Count */
+/* Existing styles */
 .floating-player-count {
   position: sticky;
   top: 0;
-  background: #0a0a0a; /* Dark background */
-  color: #f0f0f0; /* Light text color */
+  background: #0a0a0a;
+  color: #f0f0f0;
   padding: 10px;
   z-index: 100;
+  display: flex; /* Flex layout */
+  justify-content: space-between; /* Align children horizontally */
 }
-.floating-player-count h2 {
-  margin-bottom: 0 !important; /* Remove the bottom margin */
+
+.player-count-container {
+  flex: 1; /* Take up the remaining space */
+  display: flex; /* Flex layout for children */
+  justify-content: center; /* Center the player count horizontally */
+  align-items: center; /* Center the player count vertically */
 }
+
 .player-count {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  margin: 0 auto; /* Centering the text */
 }
-.fas.fa-user-astronaut {
-  margin-right: 10px; /* Space between the icon and the text */
+
+.begin {
+  /* Styles for the "Begin" button, if necessary */
 }
-.player-number {
-  font-family: "Orbitron", sans-serif;
+
+/* Mobile styles */
+@media screen and (max-width: 767px) {
+  .floating-player-count {
+    position: fixed; /* Fixed position */
+    bottom: 0; /* Position at bottom */
+    top: auto; /* Override top position */
+    width: 100%; /* Full width */
+  }
 }
+
 
 /* Faction Selection Grid */
 .factions-grid {
