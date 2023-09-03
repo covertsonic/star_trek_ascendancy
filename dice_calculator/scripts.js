@@ -90,17 +90,19 @@ function simulateDiceRolls() {
   let attackerDiceHTML = displayDiceRolls(
     attackerResults.rolls,
     attackerWeapons,
-    defenderShields
+    defenderShields,
+    "attacker"
   );
   let defenderDiceHTML = displayDiceRolls(
     defenderResults.rolls,
     defenderWeapons,
-    attackerShields
+    attackerShields,
+    "defender"
   );
 
   // Construct a single row for the round:
   let roundResultHTML = `
-<div class="row mt-4">
+<div class="row mt-4 round-result" data-round="${roundCounter}">
     <div class="col-sm-6">
         <strong>Round ${roundCounter} - Attacker - <span class="successful-hit">${
     attackerResults.hits
@@ -117,6 +119,8 @@ function simulateDiceRolls() {
         ${attackerDiceHTML}
         <hr>
     </div>
+
+    
     <div class="col-sm-6">
         <strong>Round ${roundCounter} - Defender - <span class="successful-hit">${
     defenderResults.hits
@@ -133,12 +137,40 @@ function simulateDiceRolls() {
         ${defenderDiceHTML}
         <hr>
     </div>
+
+    <div class="col-sm-6">
+    <div class="reroll-queue attacker-reroll-queue"></div>
+</div>
+
+    <div class="col-sm-6">
+    <div class="reroll-queue defender-reroll-queue"></div>
+</div>
+
 </div>
 `;
 
   // Append this row to the main results container
   const mainResultsContainer = document.getElementById("attackerResults");
-  mainResultsContainer.insertAdjacentHTML("afterbegin", roundResultHTML);
+  const newRoundElement = document.createElement("div");
+  newRoundElement.innerHTML = roundResultHTML;
+  mainResultsContainer.insertAdjacentElement("afterbegin", newRoundElement);
+
+  // Remove click events from previous rounds
+  const previousRounds = document.querySelectorAll('.round-result[data-round]:not([data-round="' + roundCounter + '"]) .dice-clickable');
+  previousRounds.forEach((diceElement) => {
+    diceElement.classList.remove("dice-clickable");
+  });
+
+  // Add click events to the dice in the new round
+  const newRoundDice = newRoundElement.querySelectorAll('.rolled-die');
+
+  newRoundDice.forEach((diceElement) => {
+    diceElement.addEventListener("click", function() {
+      const side = this.getAttribute("data-side");
+      const value = parseInt(this.getAttribute("data-value"), 10);
+      queueReroll(side, value);
+    });
+  });
 
   // Update ship counts for the next round:
   document.getElementById("attackerShips").innerText = attackerShips;
@@ -174,7 +206,7 @@ function resetCombat() {
   document.getElementById("resetCombatButton").style.display = "none";
 }
 
-function displayDiceRolls(rolls, weaponLevel, opponentShieldLevel) {
+function displayDiceRolls(rolls, weaponLevel, opponentShieldLevel,side) {
   let counts = {};
   let successfulHits = [];
   let thresholdForHit = 6 - weaponLevel + opponentShieldLevel;
@@ -194,14 +226,11 @@ function displayDiceRolls(rolls, weaponLevel, opponentShieldLevel) {
       ? "successful-hit"
       : "";
 
-    output += `<span class="fa-stack ${potentialHitClass} ${rolledClass} ${successfulHitClass}">
-                        <i class="fa-solid fa-dice-${
-                          diceNames[i]
-                        } fa-stack-1x"></i>
-                        <span class="fa-stack-1x fa-inverse">${
-                          counts[diceValue] ? "x" + counts[diceValue] : ""
-                        }</span>
-                   </span>`;
+      output += `<span class="fa-stack ${potentialHitClass} ${rolledClass} ${successfulHitClass} dice-clickable" data-side="${side}" data-value="${diceValue}">
+      <i class="fa-solid fa-dice-${diceNames[i]} fa-stack-1x"></i>
+      <span class="fa-stack-1x fa-inverse ${side}-dice-result-count" data-value="${diceValue}">${counts[diceValue] ? "x" + counts[diceValue] : ""}</span>
+    </span>`;
+    
   }
 
   return output; // Returning the HTML instead of updating the DOM
@@ -345,8 +374,8 @@ function scrollToResults() {
 
   var remainingSpace = windowHeight - rect.bottom;
 
-  console.log("height: " + windowHeight);
-  console.log("remaining space: " + remainingSpace);
+  //console.log("height: " + windowHeight);
+  //console.log("remaining space: " + remainingSpace);
 
   // Check if the remaining space is less than or equal to 400
   if (remainingSpace <= 400) {
@@ -354,3 +383,111 @@ function scrollToResults() {
     button.scrollIntoView({ behavior: "smooth" });
   }
 }
+
+
+let rerollQueue = { attacker: {}, defender: {} };
+
+
+
+function queueReroll(side, diceValue) {
+  if (!rerollQueue[side][diceValue]) {
+    rerollQueue[side][diceValue] = 0;
+  }
+
+  // Find the correct round element based on the side (attacker or defender)
+  const currentRoundElement = document.querySelector(
+    `.round-result[data-round="${roundCounter - 1}"]`
+  );
+
+  if (!currentRoundElement) {
+    console.log("Current round element not found.");
+    return;
+  }
+
+
+  const diceCountElement = currentRoundElement.querySelector(
+    `.fa-stack[data-side="${side}"][data-value="${diceValue}"] .fa-inverse`
+  );
+
+  if (!diceCountElement) {
+    console.log("Dice count element not found.");
+    return;
+  }
+
+  const diceCountText = diceCountElement.textContent.replace('x', ''); // Remove the 'x' prefix
+  const diceCount = diceCountText ? parseInt(diceCountText, 10) : 0; // If no text, assume zero
+
+  if (rerollQueue[side][diceValue] < diceCount) {
+    rerollQueue[side][diceValue]++;
+    updateRerollQueueUI(side);
+  }
+}
+
+// Helper function to capitalize the first letter of a string
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+function numberToWord(number) {
+  const words = ["one", "two", "three", "four", "five", "six"];
+  return words[number - 1];
+}
+
+function updateRerollQueueUI(side) {
+  const currentRoundElement = document.querySelector(
+    `.round-result[data-round="${roundCounter - 1}"]`
+  );
+
+  if (!currentRoundElement) {
+    console.log("Current round element not found.");
+    return;
+  }
+
+  const rerollQueueElement = currentRoundElement.querySelector(
+    `.${side}-reroll-queue`
+  );
+
+  if (!rerollQueueElement) {
+    console.log("Reroll queue element not found.");
+    return;
+  }
+
+  // Clear existing reroll queue UI
+  rerollQueueElement.innerHTML = '';
+
+// Add "Reroll Queue" label
+const label = document.createElement('small');
+label.style.color = 'grey';
+label.style.marginBottom = '5px';  // Adjust this value for desired spacing
+label.textContent = 'Reroll Queue: ';
+rerollQueueElement.insertBefore(label, rerollQueueElement.firstChild);
+// Add line break
+const lineBreak = document.createElement('br');
+rerollQueueElement.insertBefore(lineBreak, label.nextSibling);
+
+  // Loop through 1 to 6 to create new dice elements
+  for (let diceValue = 1; diceValue <= 6; diceValue++) {
+    const count = rerollQueue[side][diceValue] || 0;
+    const diceElement = document.createElement('span');
+    diceElement.className = `fa-stack dice-clickable ${count > 0 ? 'reroll-dice' : 'default-die'}`; 
+    diceElement.dataset.value = diceValue;
+    diceElement.dataset.count = count;
+
+    const diceIcon = document.createElement('i');
+    const wordValue = numberToWord(diceValue);
+    diceIcon.className = `fa-solid fa-dice-${wordValue} fa-stack-1x`; 
+    diceElement.appendChild(diceIcon);
+
+    if (count > 0) {
+      const diceCount = document.createElement('span');
+      diceCount.className = 'fa-stack-1x fa-inverse-reroll';
+      diceCount.textContent = `x${count}`;
+      diceElement.appendChild(diceCount);
+    }
+
+    rerollQueueElement.appendChild(diceElement);
+  }
+}
+
+
+
