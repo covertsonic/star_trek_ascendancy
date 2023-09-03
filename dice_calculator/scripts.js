@@ -194,7 +194,7 @@ function displayDiceRolls(rolls, weaponLevel, opponentShieldLevel) {
       ? "successful-hit"
       : "";
 
-    output += `<span class="fa-stack ${potentialHitClass} ${rolledClass} ${successfulHitClass}" style="font-size: 24px;">
+    output += `<span class="fa-stack ${potentialHitClass} ${rolledClass} ${successfulHitClass}">
                         <i class="fa-solid fa-dice-${
                           diceNames[i]
                         } fa-stack-1x"></i>
