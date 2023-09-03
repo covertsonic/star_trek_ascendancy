@@ -229,7 +229,7 @@ function confirmReset() {
   }
 }
 
-//for the dice in the header:
+//for the dice in the header and the labels on the weapons:
 function updateDiceSection() {
   // Assuming you have some method to get the weapon and shield counts for both attacker and defender
   const attackerWeapons = parseInt(
@@ -248,12 +248,37 @@ function updateDiceSection() {
   const attackerHitNumber = 6 - attackerWeapons + defenderShields;
   const defenderHitNumber = 6 - defenderWeapons + attackerShields;
 
-  document.getElementById("attackerDiceSection").innerHTML = generateDiceHTML(
-    attackerHitNumber
-  );
-  document.getElementById("defenderDiceSection").innerHTML = generateDiceHTML(
-    defenderHitNumber
-  );
+  document.getElementById("attackerDiceSection").innerHTML =
+    generateDiceHTML(attackerHitNumber);
+  document.getElementById("defenderDiceSection").innerHTML =
+    generateDiceHTML(defenderHitNumber);
+
+  document.getElementById("attackerWeaponsDisplay").innerHTML =
+    weaponsDisplayValueFromLevel(
+      +document.getElementById("attackerWeapons").innerText
+    );
+  document.getElementById("defenderWeaponsDisplay").innerHTML =
+    weaponsDisplayValueFromLevel(
+      +document.getElementById("defenderWeapons").innerText
+    );
+}
+
+//convert weapon level to the label that should show
+function weaponsDisplayValueFromLevel(weaponLevel) {
+  switch (weaponLevel) {
+    case 1:
+      return "5+";
+    case 2:
+      return "4+";
+    case 3:
+      return "3+";
+    case 4:
+      return "2+";
+    case 5:
+      return "1+";
+    default:
+      return "invalid";
+  }
 }
 
 function generateDiceHTML(hitNumber) {
