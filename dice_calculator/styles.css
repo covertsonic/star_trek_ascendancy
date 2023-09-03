@@ -31,9 +31,13 @@ body {
   height: 200px; /* Set a fixed height */
 }
 
-.fa-stack-1x {
-  line-height: 1.5;
+.fa-stack {
+  width: 1.5em;
+  font-size: 40px;
+  line-height: 1.5em;
+  height: 1.5em;
 }
+
 .big-num {
   font-size: 36px;
   text-align: center;
