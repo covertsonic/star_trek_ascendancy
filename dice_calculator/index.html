@@ -139,8 +139,18 @@
         <div class="col-sm-6">
           <!-- Defender Title & Dice section -->
           <div class="d-flex align-items-center justify-content-between mb-3">
-            <!-- Adding some bottom margin -->
-            <h3>Defender</h3>
+            <div class="d-flex align-items-center">
+              <h3>Defender</h3>
+              <button id="starbaseButton" class="starbase-button frosted">
+                <object type="image/svg+xml" data="./images/ds9-2.svg" class="starbase-image" id="starbaseSVG"></object>
+                <div class="starbase-info">
+                  <span class="starbase-text"></span>
+                  <span class="starbase-die-count">+0 die</span>
+                </div>
+              </button>
+              
+              
+            </div>
             <div>
               <span class="text-muted small mr-2">hits on</span>
               <div class="dice-section" id="defenderDiceSection"></div>

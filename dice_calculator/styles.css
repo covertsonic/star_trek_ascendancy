@@ -1,3 +1,60 @@
+/* starbase */
+.starbase-button {
+  margin-left: 10px;
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center; /* Vertically aligns the items */
+}
+
+.starbase-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Vertically aligns the text and small tag */
+}
+
+.starbase-button.frosted .starbase-image,
+.starbase-button.frosted .starbase-text,
+.starbase-button.frosted .starbase-die-count {
+  opacity: 0.5;
+}
+
+.starbase-image {
+  width: 40px; /* Adjust as needed */
+  height: 40px; /* Adjust as needed */
+}
+
+.starbase-text,
+.starbase-die-count {
+  margin-left: 5px;
+}
+
+/* Style to make the SVG color similar to Deep Space Nine */
+#starbaseSVG {
+  fill: #4D4D4F; /* You can adjust this color */
+}
+
+.starbase-button {
+  cursor: pointer;
+}
+
+.starbase-button object {
+  pointer-events: none; /* This makes sure the SVG doesn't capture the event */
+}
+
+/* Add your other styles here */
+
+
+
+
+/* Style to make the SVG color similar to Deep Space Nine */
+#starbaseSVG {
+  fill: #4D4D4F; /* You can adjust this color */
+}
+/* end of starbase */
+
 body {
   font-family: "Trebuchet MS", sans-serif; /* Trebuchet feels somewhat sci-fi-ish, adjust to taste */
 }

@@ -68,13 +68,16 @@ function simulateDiceRolls() {
     10
   );
 
+  const isStarbaseActive = !document.getElementById("starbaseButton").classList.contains("frosted");
+
+
   let attackerResults = getHits(
     attackerShips,
     attackerWeapons,
     defenderShields
   );
   let defenderResults = getHits(
-    defenderShips,
+    defenderShips + isStarbaseActive,
     defenderWeapons,
     attackerShields
   );
@@ -109,6 +112,7 @@ const hiddenDefenderField = `<input type="hidden" id="uncappedDefenderShips${rou
 const attackerShipsText = uncappedAttackerShips < 0 ? `${uncappedAttackerShips} (0)` : attackerShips;
 const defenderShipsText = uncappedDefenderShips < 0 ? `${uncappedDefenderShips} (0)` : defenderShips;
 
+const starbaseText = isStarbaseActive ? " (+base)" : "";
 
   // Construct a single row for the round:
   let roundResultHTML = `
@@ -122,7 +126,7 @@ const defenderShipsText = uncappedDefenderShips < 0 ? `${uncappedDefenderShips} 
               <hr>
               <strong>Round ${roundCounter} - Attacker - <span class="successful-hit">${attackerResults.hits} Hit</strong></span>
               <br/><small style="color:grey;">Attacker Ships: ${document.getElementById("attackerShips").innerText} Ships | ${defenderResults.hits} Lost |  ${attackerShipsText} Remaining
-              <br/>Defender Ships: ${document.getElementById("defenderShips").innerText} Ships | <b>${attackerResults.hits}</b> Lost | ${defenderShipsText} Remaining</small>
+              <br/>Defender Ships: ${document.getElementById("defenderShips").innerText} Ships${starbaseText} | <b>${attackerResults.hits}</b> Lost | ${defenderShipsText} Remaining</small>
               <br/>
               ${attackerDiceHTML}
           </div>
@@ -138,7 +142,7 @@ const defenderShipsText = uncappedDefenderShips < 0 ? `${uncappedDefenderShips} 
           <div class="col-12">
               <hr>
               <strong>Round ${roundCounter} - Defender - <span class="successful-hit">${defenderResults.hits} Hit</strong></span>
-              <br/><small style="color:grey;">Defender Ships: ${document.getElementById("defenderShips").innerText} Ships | ${attackerResults.hits} Lost |  ${defenderShips} Remaining
+              <br/><small style="color:grey;">Defender Ships: ${document.getElementById("defenderShips").innerText} Ships${starbaseText} | ${attackerResults.hits} Lost |  ${defenderShips} Remaining
               <br/>Attacker Ships: ${document.getElementById("attackerShips").innerText} Ships | <b>${defenderResults.hits}</b> Lost | ${attackerShips} Remaining</small>
               <br/>
               ${defenderDiceHTML}
@@ -195,9 +199,9 @@ function resetCombat() {
   // Reset the round counter
   roundCounter = 0;
 
-  //Reset ship counts back to 3
-  //document.getElementById("attackerShips").innerHTML = "3";
-  //document.getElementById("defenderShips").innerHTML = "3";
+  // Reset ship counts back to 3 if below 3
+document.getElementById("attackerShips").innerHTML = Math.max(3, parseInt(document.getElementById("attackerShips").innerHTML, 10)).toString();
+document.getElementById("defenderShips").innerHTML = Math.max(3, parseInt(document.getElementById("defenderShips").innerHTML, 10)).toString();
 
   // Clear the dice roll results
   document.getElementById("attackerResults").innerHTML = "";
@@ -209,6 +213,12 @@ function resetCombat() {
 
   //Clear the rerollQueue and related UI elements
   rerollQueue = { attacker: {}, defender: {} };
+
+  //remove startbase
+  const starbaseButton = document.getElementById("starbaseButton");
+  const starbaseDieCount = starbaseButton.querySelector(".starbase-die-count");
+  starbaseButton.classList.add("frosted");
+  starbaseDieCount.textContent = "+0 die";
 }
 
 function displayDiceRolls(rolls, weaponLevel, opponentShieldLevel, side) {
@@ -353,12 +363,13 @@ function scrollToElement(roundCounter, side) {
     
     // Check if the element is not fully in view
     if (rect.bottom > windowHeight || rect.top < 0) {
-      element.scrollIntoView({ behavior: "smooth" });
+      element.scrollIntoView({ behavior: "smooth", block: "end" });
     }
   } else {
     console.error(`Element for round ${roundCounter} and side ${side} not found.`);
   }
 }
+
 
 
 
@@ -744,9 +755,13 @@ let defenderShipsBefore = uncappedDefenderShipsBefore;
     document.getElementById("attackerShips").innerText = attackerShipsRemaining;
   }
 
+
+
   let roundSummary = "";
   if (side === "attacker") {
-    roundSummary = `<small style="color:grey;">Defender: ${defenderShipsBefore} Ships | <b>${changeInHitsFromReroll}</b> Lost | ${defenderShipsRemaining} Remaining</small>`;
+    const isStarbaseActive = !document.getElementById("starbaseButton").classList.contains("frosted");
+    const starbaseText = isStarbaseActive ? " (+base)" : "";
+    roundSummary = `<small style="color:grey;">Defender: ${defenderShipsBefore} Ships${starbaseText} | <b>${changeInHitsFromReroll}</b> Lost | ${defenderShipsRemaining} Remaining</small>`;
   } else {
     roundSummary = `<small style="color:grey;">Attacker: ${attackerShipsBefore} Ships | <b>${changeInHitsFromReroll}</b> Lost | ${attackerShipsRemaining} Remaining</small>`;
   }
@@ -783,6 +798,22 @@ let defenderShipsBefore = uncappedDefenderShipsBefore;
   scrollToElement(roundCounter, side);
 }
 
+document.addEventListener("DOMContentLoaded", function() {
+  const starbaseButton = document.getElementById("starbaseButton");
+  const starbaseDieCount = starbaseButton.querySelector(".starbase-die-count");
+
+  starbaseButton.addEventListener("click", function() {
+    if (starbaseButton.classList.contains("frosted")) {
+      starbaseButton.classList.remove("frosted");
+      starbaseDieCount.textContent = "+1 die";
+    } else {
+      starbaseButton.classList.add("frosted");
+      starbaseDieCount.textContent = "+0 die";
+    }
+  });
+});
+
+
 
 /* 
 Done:
@@ -793,12 +824,11 @@ Reroll on subsequent rounds doesn't work after global event listener refactor
 Post reroll results won't go negative if someone rerolled hits which became non-hits
 Scroll down when clicking reroll or when initiating the reroll queue for the first time
 To help with first strike (we are not implementing first strike), make it so resetting doesn't reset ship counts
+Add starbase toggle for defender which will add one die result
 
 To Dos:
-5. Review the rules to see if need to add starbase or add +X die option
-6. Imlement +X die option
+none!
 
-Maybe never:
-3. Remove event listener on reroll
-4. Remove event listener on reroll die queue
+Other notes:
+Global event listeners are maddness!  I will avoid in future projects.  
 */
