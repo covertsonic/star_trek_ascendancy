@@ -11,7 +11,7 @@ body {
 }
 
 .potential-hit {
-  border: 2px solid #000; /* Adjust as needed */
+  border: 2px solid #007BFF; /* Adjust as needed */
   border-radius: 4px; /* Optional */
 }
 
@@ -20,11 +20,13 @@ body {
 }
 
 .successful-hit {
-  color: darkred;
-  border-color: darkred;
+  color: rgb(216, 0, 0);
+  /*border-color: darkred;*/ /* this is not as intuitive as setting to the "hits on" text */
+  border-color: #007BFF;/* set to  same color as "hits on" element */
 }
 .hit-border {
-  border-color: darkred;
+  /*border-color: darkred;*/ /* this is not as intuitive as setting to the "hits on" text */
+  border-color: #007BFF;/* set to  same color as "hits on" element */
 }
 /* Star Trek Aesthetics */
 .card {
@@ -32,13 +34,26 @@ body {
 }
 
 .fa-stack {
-  width: 1.5em;
+  width: 1.2em;
   font-size: 40px;
-  line-height: 1.5em;
-  height: 1.5em;
+  line-height: 1.2em;
+  height: 1.2em;
 }
 
-.big-num {
+.fa-inverse{
+  color: #000;
+  font-size: 32px;
+  font-weight: bold;
+}
+
+
+#attackerResults .dice-result-count {
+  font-size: 30px; /* Adjust the font size to your preference */
+  text-align: center;
+}
+
+
+.big-num { /* numbers at the top for ship/weapons/shields */
   font-size: 36px;
   text-align: center;
 }
@@ -73,4 +88,30 @@ body {
   font-size: 0.6em;
   color: #777;
   font-weight: bold;
+}
+
+
+.reroll-queue {
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.reroll-dice {
+  margin-right: 5px;
+}
+
+.fa-inverse-reroll{
+  color: white;
+    font-size: 32px;
+    font-weight: bold;
+}
+.reroll-queue-label {
+  color: grey;
+  margin-bottom: 5px;  /* Adjust for desired spacing */
+}
+
+.dice-clickable:hover {
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.1); /* Adds a light gray background */
+  border-radius: 4px; /* Rounds the corners */
 }
