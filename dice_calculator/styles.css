@@ -34,10 +34,10 @@ body {
 }
 
 .fa-stack {
-  width: 1.5em;
+  width: 1.2em;
   font-size: 40px;
-  line-height: 1.5em;
-  height: 1.5em;
+  line-height: 1.2em;
+  height: 1.2em;
 }
 
 .fa-inverse{
@@ -108,4 +108,10 @@ body {
 .reroll-queue-label {
   color: grey;
   margin-bottom: 5px;  /* Adjust for desired spacing */
+}
+
+.dice-clickable:hover {
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.1); /* Adds a light gray background */
+  border-radius: 4px; /* Rounds the corners */
 }
