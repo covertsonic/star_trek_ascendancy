@@ -1,6 +1,9 @@
+.btn-light {
+  padding:2px;
+}
+
 /* starbase */
 .starbase-button {
-  margin-left: 10px;
   position: relative;
   background: none;
   border: none;
