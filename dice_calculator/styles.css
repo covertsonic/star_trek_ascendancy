@@ -87,7 +87,7 @@ body {
 }
 /* Star Trek Aesthetics */
 .card {
-  height: 180px; /* Set a fixed height */
+  height: 175px; /* Set a fixed height */
 }
 .card-body {
   padding: .5em;
