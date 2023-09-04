@@ -1,12 +1,5 @@
 updateDiceSection(); //load the dice graphics at the top
 
-//set the eventlisteners for scrolling on small screens
-document
-  .getElementById("simulateNextRoundButton")
-  .addEventListener("click", scrollToResults);
-document
-  .getElementById("simulateCombatButton")
-  .addEventListener("click", scrollToResults);
 
 function incrementValue(elementId, incrementBy, max, min) {
   const element = document.getElementById(elementId);
@@ -38,9 +31,12 @@ function getHits(ships, weaponLevel, opponentShieldLevel) {
   return { hits: hits, rolls: rolls };
 }
 
-let roundCounter = 1;
+let roundCounter = 0;
 
 function simulateDiceRolls() {
+    // Increment round counter
+    roundCounter++;
+
   let attackerHits = 0;
   let defenderHits = 0;
   let attackerLosses = 0;
@@ -83,8 +79,17 @@ function simulateDiceRolls() {
     attackerShields
   );
 
-  attackerShips = Math.max(0, attackerShips - defenderResults.hits); // Reducing attacker's ships based on defender's hits
-  defenderShips = Math.max(0, defenderShips - attackerResults.hits); // Reducing defender's ships based on attacker's hits
+  // Calculate uncapped ship counts
+const uncappedAttackerShips = attackerShips - defenderResults.hits;
+const uncappedDefenderShips = defenderShips - attackerResults.hits;
+
+// Add hidden fields to store uncapped ship counts
+const hiddenAttackerField = `<input type="hidden" id="uncappedAttackerShips${roundCounter}" value="${uncappedAttackerShips}">`;
+const hiddenDefenderField = `<input type="hidden" id="uncappedDefenderShips${roundCounter}" value="${uncappedDefenderShips}">`;
+
+
+  attackerShips = Math.max(0, uncappedAttackerShips); // Reducing attacker's ships based on defender's hits
+  defenderShips = Math.max(0, uncappedDefenderShips); // Reducing defender's ships based on attacker's hits
 
   //LOGIC FOR DISPLAYING RESULTS
   let attackerDiceHTML = displayDiceRolls(
@@ -100,55 +105,51 @@ function simulateDiceRolls() {
     "defender"
   );
 
+  // Update the text to indicate uncapped losses
+const attackerShipsText = uncappedAttackerShips < 0 ? `${uncappedAttackerShips} (0)` : attackerShips;
+const defenderShipsText = uncappedDefenderShips < 0 ? `${uncappedDefenderShips} (0)` : defenderShips;
+
+
   // Construct a single row for the round:
   let roundResultHTML = `
-<div class="row mt-4 round-result" data-round="${roundCounter}">
-    <div class="col-sm-6">
-    <hr>
-        <strong>Round ${roundCounter} - Attacker - <span class="successful-hit">${
-    attackerResults.hits
-  } Hit</strong></span>
-        <br/><small style="color:grey;">Attacker Ships: ${
-          document.getElementById("attackerShips").innerText
-        } Ships | ${defenderResults.hits} Lost |  ${attackerShips} Remaining
-        <br/>Defender Ships: ${
-          document.getElementById("defenderShips").innerText
-        } Ships | <b>${
-    attackerResults.hits
-  }</b> Lost | ${defenderShips} Remaining</small>
-        <br/>
-        ${attackerDiceHTML}
-        
-    </div>
-    <div class="col-sm-6">
-    <div class="reroll-queue attacker-reroll-queue"></div>
-</div>
-    
-    <div class="col-sm-6">
-    <hr>
-        <strong>Round ${roundCounter} - Defender - <span class="successful-hit">${
-    defenderResults.hits
-  } Hit</strong></span>
-        <br/><small style="color:grey;">Defender Ships: ${
-          document.getElementById("defenderShips").innerText
-        } Ships | ${attackerResults.hits} Lost |  ${defenderShips} Remaining
-        <br/>Attacker Ships: ${
-          document.getElementById("attackerShips").innerText
-        } Ships | <b>${
-    defenderResults.hits
-  }</b> Lost | ${attackerShips} Remaining</small>
-        <br/>
-        ${defenderDiceHTML}
-        
-    </div>
+  <div class="row mt-4 round-result" data-round="${roundCounter}">
+      ${hiddenAttackerField}
+    ${hiddenDefenderField}
+  <!-- Attacker Section -->
+  <div class="col-sm-6">
+      <div class="row">
+          <div class="col-12">
+              <hr>
+              <strong>Round ${roundCounter} - Attacker - <span class="successful-hit">${attackerResults.hits} Hit</strong></span>
+              <br/><small style="color:grey;">Attacker Ships: ${document.getElementById("attackerShips").innerText} Ships | ${defenderResults.hits} Lost |  ${attackerShipsText} Remaining
+              <br/>Defender Ships: ${document.getElementById("defenderShips").innerText} Ships | <b>${attackerResults.hits}</b> Lost | ${defenderShipsText} Remaining</small>
+              <br/>
+              ${attackerDiceHTML}
+          </div>
+          <div class="col-12">
+              <div class="reroll-queue attacker-reroll-queue"></div>
+          </div>
+      </div>
+  </div>
 
-
-
-    <div class="col-sm-6">
-    <div class="reroll-queue defender-reroll-queue"></div>
+  <!-- Defender Section -->
+  <div class="col-sm-6">
+      <div class="row">
+          <div class="col-12">
+              <hr>
+              <strong>Round ${roundCounter} - Defender - <span class="successful-hit">${defenderResults.hits} Hit</strong></span>
+              <br/><small style="color:grey;">Defender Ships: ${document.getElementById("defenderShips").innerText} Ships | ${attackerResults.hits} Lost |  ${defenderShips} Remaining
+              <br/>Attacker Ships: ${document.getElementById("attackerShips").innerText} Ships | <b>${defenderResults.hits}</b> Lost | ${attackerShips} Remaining</small>
+              <br/>
+              ${defenderDiceHTML}
+          </div>
+          <div class="col-12">
+              <div class="reroll-queue defender-reroll-queue"></div>
+          </div>
+      </div>
+  </div>
 </div>
 
-</div>
 `;
 
   // Append this row to the main results container
@@ -167,29 +168,20 @@ function simulateDiceRolls() {
     diceElement.classList.remove("dice-clickable");
   });
 
-  // Add click events to the dice in the new round
-  const newRoundDice = newRoundElement.querySelectorAll(".rolled-die");
 
-  newRoundDice.forEach((diceElement) => {
-    diceElement.addEventListener("click", function () {
-      //console.log("Dice clicked");  // Debugging line
-      const side = this.getAttribute("data-side");
-      const value = parseInt(this.getAttribute("data-value"), 10);
-      queueReroll(side, value, this);
-    });
-  });
 
   // Update ship counts for the next round:
   document.getElementById("attackerShips").innerText = attackerShips;
   document.getElementById("defenderShips").innerText = defenderShips;
 
-  // Increment round counter
-  roundCounter++;
+
 
   // Hide the Simulate Combat button and show the next two
   document.getElementById("simulateCombatButton").style.display = "none";
   document.getElementById("simulateNextRoundButton").style.display = "block";
   document.getElementById("resetCombatButton").style.display = "block";
+  scrollToElement(roundCounter, 'attacker');
+
 }
 
 function continueToNextRound() {
@@ -201,11 +193,11 @@ function continueToNextRound() {
 }
 function resetCombat() {
   // Reset the round counter
-  roundCounter = 1;
+  roundCounter = 0;
 
   //Reset ship counts back to 3
-  document.getElementById("attackerShips").innerHTML = "3";
-  document.getElementById("defenderShips").innerHTML = "3";
+  //document.getElementById("attackerShips").innerHTML = "3";
+  //document.getElementById("defenderShips").innerHTML = "3";
 
   // Clear the dice roll results
   document.getElementById("attackerResults").innerHTML = "";
@@ -340,33 +332,6 @@ function generateDiceHTML(hitNumber) {
   return html;
 }
 
-function getDiceFaceHTML(number, status) {
-  const color = status === "hit" ? "#007bff" : "grey";
-  let iconClass = "";
-
-  switch (number) {
-    case 1:
-      iconClass = "fa-dice-one";
-      break;
-    case 2:
-      iconClass = "fa-dice-two";
-      break;
-    case 3:
-      iconClass = "fa-dice-three";
-      break;
-    case 4:
-      iconClass = "fa-dice-four";
-      break;
-    case 5:
-      iconClass = "fa-dice-five";
-      break;
-    case 6:
-      iconClass = "fa-dice-six";
-      break;
-  }
-
-  return `<span class="dice ${status}" style="color: ${color};"><i class="fas ${iconClass}"></i></span>`;
-}
 
 //All buttons for +/- modifiers to shields and weapons should trigger an update to the to-hit die results
 document.addEventListener("DOMContentLoaded", (event) => {
@@ -380,45 +345,43 @@ document.addEventListener("DOMContentLoaded", (event) => {
 });
 
 //handle scrolling when the die results are not in view
-function scrollToResults() {
-  var windowHeight =
-    window.innerHeight ||
-    document.documentElement.clientHeight ||
-    document.body.clientHeight;
-
-  var button = document.getElementById("simulateNextRoundButton");
-  var rect = button.getBoundingClientRect();
-
-  var remainingSpace = windowHeight - rect.bottom;
-
-  //console.log("height: " + windowHeight);
-  //console.log("remaining space: " + remainingSpace);
-
-  // Check if the remaining space is less than or equal to 400
-  if (remainingSpace <= 400) {
-    // Scroll to the round results section
-    button.scrollIntoView({ behavior: "smooth" });
+function scrollToElement(roundCounter, side) {
+  const element = document.querySelector(`.round-result[data-round="${roundCounter}"] .${side}-reroll-queue`);
+  if (element) {
+    const rect = element.getBoundingClientRect();
+    const windowHeight = (window.innerHeight || document.documentElement.clientHeight);
+    
+    // Check if the element is not fully in view
+    if (rect.bottom > windowHeight || rect.top < 0) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  } else {
+    console.error(`Element for round ${roundCounter} and side ${side} not found.`);
   }
 }
 
-function handleOriginalDieClick(element, side, diceValue, round) {
-  console.log("Inside original dice");
 
-  if (round !== roundCounter && round !== roundCounter - 1) {
+
+
+
+function handleOriginalDieClick(element, side, diceValue, round) {
+//  console.log("Executing the handleOriginalDieClick");
+
+  if (round !== roundCounter && round !== roundCounter) {
     console.log("Round mismatch. Exiting...");
     return;
   }
 
   const rerollButton = document.querySelector(
-    `.reroll-button[data-side="${side}"]`
+    `.reroll-button[data-side="${side}"][data-round="${round}"]`
   );
-  console.log(
+/*  console.log(
     "Reroll button display:",
     rerollButton ? rerollButton.style.display : "Button not found"
-  );
+  );*/
 
   if (rerollButton && rerollButton.style.display === "none") {
-    console.log("Reroll button is not visible. Exiting...");
+//    console.log("Reroll button exists but is not visible (indicating this round has already been rerolled). Exiting...");
     return;
   }
 
@@ -429,21 +392,21 @@ function handleOriginalDieClick(element, side, diceValue, round) {
   const rerollCount = rerollQueue[side][diceValue] || 0;
 
   if (currentCount > rerollCount) {
-    console.log(`Queueing reroll for ${side} and dieValue ${diceValue}`);
+    //console.log(`Queueing reroll for ${side} and dieValue ${diceValue}`);
     queueReroll(side, diceValue, element);
-    console.log("another successful call to URQUI.");
-    updateRerollQueueUI(side);
+    //console.log("another successful call to URQUI.");
+    //updateRerollQueueUI(side); //this is not necessary since queueReroll calls this already
   }
 }
 
 let rerollQueue = { attacker: {}, defender: {} };
 
+//adds a result to the die
 function queueReroll(side, diceValue, clickedElement) {
   // Check if the clicked die's round matches the current round
   const dieRound = parseInt(clickedElement.getAttribute("data-round"), 10);
 
-  if (dieRound !== roundCounter - 1) {
-    //roundcounter will be at 2 when the first round die is clicked
+  if (dieRound !== roundCounter ) {
     return; // Do not proceed with reroll
   }
 
@@ -468,7 +431,7 @@ function queueReroll(side, diceValue, clickedElement) {
     rerollQueue[side][diceValue] = 0;
   }
 
-  console.log("queueRoll is calling the URQUI.");
+//  console.log("queueRoll function is calling the updateRerollQueueUI.");
   updateRerollQueueUI(side);
 }
 
@@ -477,15 +440,22 @@ function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+function getDiceFaceHTML(number, status) {
+  const color = status === "hit" ? "#007bff" : "grey";
+  const iconClass = `fa-dice-${numberToWord(number)}`;
+
+  return `<span class="dice ${status}" style="color: ${color};"><i class="fas ${iconClass}"></i></span>`;
+}
+
 function numberToWord(number) {
   const words = ["one", "two", "three", "four", "five", "six"];
   return words[number - 1];
 }
 
 function updateRerollQueueUI(side) {
-  console.log("starting the creation of the button; updatererollqueueui.");
+  //console.log("starting the creation of the button; updatererollqueueui.");
   const currentRoundElement = document.querySelector(
-    `.round-result[data-round="${roundCounter - 1}"]`
+    `.round-result[data-round="${roundCounter}"]`
   );
 
   if (!currentRoundElement) {
@@ -521,6 +491,7 @@ function updateRerollQueueUI(side) {
   rerollButton.textContent = "Reroll";
   // Add data-side attribute to distinguish between attacker and defender
   rerollButton.setAttribute("data-side", side);
+  rerollButton.setAttribute("data-round", roundCounter); 
   rerollQueueElement.insertBefore(rerollButton, label.nextSibling);
 
   // Add line break
@@ -551,6 +522,7 @@ function updateRerollQueueUI(side) {
 
     rerollQueueElement.appendChild(diceElement);
   }
+  scrollToElement(roundCounter, side);
 }
 
 /**
@@ -561,14 +533,14 @@ function updateRerollQueueUI(side) {
  */
 // Add a global click event listener
 document.addEventListener("click", function (event) {
-  console.log("Click event triggered");
+//  console.log("Click event triggered");
 
   // Determine if the click is within the reroll queue first
   if (event.target.closest(".reroll-queue")) {
-    console.log("Inside reroll queue");
+//    console.log("Inside reroll queue");
     const dieElement = event.target.closest(".fa-stack");
     if (dieElement === null) {
-      console.log("No die element found in reroll queue.");
+//      console.log("No die element found in reroll queue.");
       return; // Exit if no die element is found
     }
 
@@ -579,25 +551,25 @@ document.addEventListener("click", function (event) {
       ? "attacker"
       : "defender";
 
-    const rerollButton = document.querySelector(
-      `.reroll-button[data-side="${side}"]`
-    );
-    console.log(
+      const rerollButton = document.querySelector(
+        `.reroll-button[data-side="${side}"][data-round="${roundCounter}"]`
+      );
+/*    console.log(
       "Reroll button display:",
       rerollButton ? rerollButton.style.display : "Button not found"
-    );
+    );*/
 
     if (rerollButton && rerollButton.style.display === "none") {
-      console.log("Reroll button is not visible. Exiting...");
+      //console.log("Reroll button is not visible. Exiting...");
       return; // Do not proceed with reroll if the reroll button is not visible
     }
 
     if (rerollQueue[side][dieValue] > 0) {
-      console.log(
+/*      console.log(
         `Decrementing rerollQueue for ${side} and dieValue ${dieValue}`
-      );
+      );*/
       rerollQueue[side][dieValue]--;
-      console.log("successfully calling URQUI.");
+      //console.log("successfully calling URQUI.");
       updateRerollQueueUI(side);
     }
     return; // Exit the function after handling reroll queue click
@@ -625,25 +597,50 @@ function capitalizeFirstLetter(string) {
 
 function handleReroll(side) {
   const currentRoundElement = document.querySelector(
-    `.round-result[data-round="${roundCounter - 1}"]`
+    `.round-result[data-round="${roundCounter}"]`
   );
+
+  if (!currentRoundElement) {
+    console.error('Could not find the current round element.');
+    return;
+  }
+
   const rerollQueueElement = currentRoundElement.querySelector(
     `.${side}-reroll-queue`
   );
+
+  if (!rerollQueueElement) {
+    console.error(`Could not find the reroll queue for ${side}.`);
+    return;
+  }
+
   const allStrongElements = Array.from(
-    currentRoundElement.querySelectorAll(".col-sm-6 > strong")
+    currentRoundElement.querySelectorAll(`.col-sm-6 .col-12 > strong`)
   );
+
   const originalRollsElement = allStrongElements.find((el) =>
     el.textContent.includes(capitalizeFirstLetter(side))
-  ).parentElement;
+  );
+
+  if (!originalRollsElement) {
+    console.error(`Could not find the original rolls element for ${side}.`);
+    return;
+  }
+
+  const originalRollsParentElement = originalRollsElement.parentElement;
+
+  if (!originalRollsParentElement) {
+    console.error(`Could not find the parent element for the original rolls of ${side}.`);
+    return;
+  }
 
   let originalRolls = [];
+  let unmodifiedOriginalRolls = []; // New array to keep track of unmodified original rolls
 
-  // ------------- CODE FOR GATHERING ORIGINAL ROLLS AND REROLLING --------------------
-  // Only select dice that have the 'rolled-die' class
   const dieElements = Array.from(
-    originalRollsElement.querySelectorAll(".fa-stack.rolled-die")
+    originalRollsParentElement.querySelectorAll(".col-12 > .rolled-die")
   );
+  
   dieElements.forEach((dieElement) => {
     const dieValue = parseInt(dieElement.getAttribute("data-value"), 10);
     const countElement = dieElement.querySelector(".fa-inverse");
@@ -652,10 +649,10 @@ function handleReroll(side) {
       : 1;
     for (let i = 0; i < count; i++) {
       originalRolls.push(dieValue);
+      unmodifiedOriginalRolls.push(dieValue); // Add to the unmodified array as well
     }
   });
 
-  // Identify which dice were rerolled and remove them from originalRolls
   const rerolledDice = [];
   for (const [diceValue, count] of Object.entries(rerollQueue[side])) {
     for (let i = 0; i < count; i++) {
@@ -667,10 +664,8 @@ function handleReroll(side) {
     }
   }
 
-  // Combine original and rerolled dice to get the final rolls
   const finalRolls = [...originalRolls, ...rerolledDice];
 
-  // Assuming 'side' is either 'attacker' or 'defender'
   const weaponLevel = parseInt(
     document.getElementById(`${side}Weapons`).innerText,
     10
@@ -680,7 +675,6 @@ function handleReroll(side) {
       ? parseInt(document.getElementById("defenderShields").innerText, 10)
       : parseInt(document.getElementById("attackerShields").innerText, 10);
 
-  // Update UI with rerolled dice and final dice
   const rerolledDiceHTML = displayDiceRolls(
     rerolledDice,
     weaponLevel,
@@ -694,9 +688,18 @@ function handleReroll(side) {
     side
   );
 
-  // ------------- end of - CODE FOR GATHERING ORIGINAL ROLLS AND REROLLING --------------------
 
-  // Capture the ship counts just before the new reroll hits are added
+  // Retrieve uncapped ship counts from hidden fields
+const uncappedAttackerShipsBefore = parseInt(
+  document.getElementById(`uncappedAttackerShips${roundCounter}`).value,
+  10
+);
+const uncappedDefenderShipsBefore = parseInt(
+  document.getElementById(`uncappedDefenderShips${roundCounter}`).value,
+  10
+);
+
+/*
   let attackerShipsBefore = parseInt(
     document.getElementById("attackerShips").innerText,
     10
@@ -705,16 +708,18 @@ function handleReroll(side) {
     document.getElementById("defenderShips").innerText,
     10
   );
+*/
+  // Use uncapped values for calculations
+let attackerShipsBefore = uncappedAttackerShipsBefore;
+let defenderShipsBefore = uncappedDefenderShipsBefore;
 
-  // Calculate the hits from the original rolls
   let originalHits = 0;
-  for (let i = 0; i < originalRolls.length; i++) {
-    if (originalRolls[i] >= 6 - weaponLevel + opponentShieldLevel) {
+  for (let i = 0; i < unmodifiedOriginalRolls.length; i++) {
+    if (unmodifiedOriginalRolls[i] >= 6 - weaponLevel + opponentShieldLevel) {
       originalHits++;
     }
   }
 
-  // Calculate the hits from the final rolls
   let finalHits = 0;
   for (let i = 0; i < finalRolls.length; i++) {
     if (finalRolls[i] >= 6 - weaponLevel + opponentShieldLevel) {
@@ -722,10 +727,8 @@ function handleReroll(side) {
     }
   }
 
-  // Calculate the new hits based on the difference between final and original hits
   let changeInHitsFromReroll = finalHits - originalHits;
-
-  // Update the ship counts based on the new hits
+  
   let defenderShipsRemaining, attackerShipsRemaining;
   if (side === "attacker") {
     defenderShipsRemaining = Math.max(
@@ -741,26 +744,24 @@ function handleReroll(side) {
     document.getElementById("attackerShips").innerText = attackerShipsRemaining;
   }
 
-  // Prepare the round summary based on the side
   let roundSummary = "";
   if (side === "attacker") {
-    roundSummary = `<small style="color:grey;">Defender Ships: ${defenderShipsBefore} Ships | <b>${changeInHitsFromReroll}</b> Lost | ${defenderShipsRemaining} Remaining</small>`;
+    roundSummary = `<small style="color:grey;">Defender: ${defenderShipsBefore} Ships | <b>${changeInHitsFromReroll}</b> Lost | ${defenderShipsRemaining} Remaining</small>`;
   } else {
-    roundSummary = `<small style="color:grey;">Attacker Ships: ${attackerShipsBefore} Ships | <b>${changeInHitsFromReroll}</b> Lost | ${attackerShipsRemaining} Remaining</small>`;
+    roundSummary = `<small style="color:grey;">Attacker: ${attackerShipsBefore} Ships | <b>${changeInHitsFromReroll}</b> Lost | ${attackerShipsRemaining} Remaining</small>`;
   }
 
-  // Update the reroll queue UI to include the new hit count and round summary
   const rerollResultHTML = `
     <p>
       Rerolled Dice Results (${
         rerolledDice.length
-      } rolled) - <span class="successful-hit">${changeInHitsFromReroll} Hit</span>
+      } rerolled) - <span class="successful-hit">${changeInHitsFromReroll} Hit</span>
       <br/>
       ${rerolledDiceHTML}
     </p>
     <p>
       <strong>Round ${
-        roundCounter - 1
+        roundCounter
       } Final (Post Reroll) - ${capitalizeFirstLetter(
     side
   )} - <span class="successful-hit">${finalHits} Hit</span></strong>
@@ -773,11 +774,31 @@ function handleReroll(side) {
 
   rerollQueueElement.insertAdjacentHTML("beforeend", rerollResultHTML);
 
-  // Hide the reroll button
   const rerollButton = document.querySelector(
-    `.reroll-button[data-side="${side}"]`
+    `.reroll-button[data-side="${side}"][data-round="${roundCounter}"]`
   );
   if (rerollButton) {
     rerollButton.style.display = "none";
   }
+  scrollToElement(roundCounter, side);
 }
+
+
+/* 
+Done:
+Remove event listener on original die
+Fix responsive design
+Fix that the reroll queue has a slightly different format
+Reroll on subsequent rounds doesn't work after global event listener refactor
+Post reroll results won't go negative if someone rerolled hits which became non-hits
+Scroll down when clicking reroll or when initiating the reroll queue for the first time
+To help with first strike (we are not implementing first strike), make it so resetting doesn't reset ship counts
+
+To Dos:
+5. Review the rules to see if need to add starbase or add +X die option
+6. Imlement +X die option
+
+Maybe never:
+3. Remove event listener on reroll
+4. Remove event listener on reroll die queue
+*/

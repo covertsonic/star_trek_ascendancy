@@ -30,7 +30,10 @@ body {
 }
 /* Star Trek Aesthetics */
 .card {
-  height: 200px; /* Set a fixed height */
+  height: 175px; /* Set a fixed height */
+}
+.card-body {
+  padding: .5em;
 }
 
 .fa-stack {
@@ -96,9 +99,7 @@ body {
   margin-top: 10px;
 }
 
-.reroll-dice {
-  margin-right: 5px;
-}
+
 
 .fa-inverse-reroll{
   color: white;
