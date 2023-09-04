@@ -29,12 +29,9 @@
 .starbase-text,
 .starbase-die-count {
   margin-left: 5px;
+  font-weight: bold;
 }
 
-/* Style to make the SVG color similar to Deep Space Nine */
-#starbaseSVG {
-  fill: #4D4D4F; /* You can adjust this color */
-}
 
 .starbase-button {
   cursor: pointer;
@@ -131,6 +128,15 @@ body {
 .ship-icon,
 .ship-text {
   color: #007bff;
+}
+
+.ship-icon {
+  width: 24px; /* or whatever size you want */
+  height: 24px; /* or whatever size you want */
+}
+
+.ship-icon object, .ship-icon img {
+  fill: #007bff; 
 }
 
 .weapon-icon,
