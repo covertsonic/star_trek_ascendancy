@@ -31,9 +31,32 @@ function getHits(ships, weaponLevel, opponentShieldLevel) {
   return { hits: hits, rolls: rolls };
 }
 
+function hideAllRerollButtons(){
+    // Check for reroll buttons and hide them if they are still visible
+  const rerollButtons = document.querySelectorAll('.reroll-button');
+  let anyButtonVisible = false;
+
+  rerollButtons.forEach(button => {
+    if (window.getComputedStyle(button).display !== 'none') {
+      anyButtonVisible = true;
+      button.style.display = 'none'; // Hide individual reroll button
+    }
+  });
+
+  // If any reroll button was visible, hide the entire reroll queue section
+  if (anyButtonVisible) {
+    const rerollQueueSections = document.querySelectorAll('.reroll-queue');
+    rerollQueueSections.forEach(section => {
+      section.style.display = 'none'; // Hide reroll queue section
+    });
+  }
+}
+
 let roundCounter = 0;
 
 function simulateDiceRolls() {
+  //check if any reroll buttons are still visible and close them
+  hideAllRerollButtons();
     // Increment round counter
     roundCounter++;
 
