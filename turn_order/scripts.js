@@ -129,7 +129,9 @@ function randomizeNextTurnOrder() {
 
   // Shuffle the factions for the next turn
   const factions = Array.from(tableBody.rows);
-  const shuffledFactions = [...factions].sort(() => Math.random() - 0.5);
+//  const shuffledFactions = [...factions].sort(() => Math.random() - 0.5); //This method is known to be biased and not truly random
+const shuffledFactions = shuffleArray([...factions]);  //A better approach would be to use the Fisher-Yates Shuffle algorithm.
+
 
   shuffledFactions.forEach((row, index) => {
     const turnCell = document.createElement("td");
@@ -297,4 +299,23 @@ function reorderFactionsByCurrentRound() {
   // Replace existing rows with sorted rows
   tableBody.innerHTML = "";
   sortedRows.forEach((row) => tableBody.appendChild(row));
+}
+
+
+function shuffleArray(array) {
+  let currentIndex = array.length, randomIndex;
+
+  // While there remain elements to shuffle...
+  while (currentIndex !== 0) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex], array[currentIndex]];
+  }
+
+  return array;
 }
