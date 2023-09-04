@@ -239,12 +239,14 @@ function displayDiceRolls(rolls, weaponLevel, opponentShieldLevel, side) {
       ? "successful-hit"
       : "";
 
-    output += `<span class="fa-stack ${potentialHitClass} ${rolledClass} ${successfulHitClass} dice-clickable" data-side="${side}" data-value="${diceValue}" data-round="${roundCounter}">
-      <i class="fa-solid fa-dice-${diceNames[i]} fa-stack-1x"></i>
-      <span class="fa-stack-1x fa-inverse ${side}-dice-result-count" data-value="${diceValue}">${
+    output += `<span class="fa-stack ${potentialHitClass} ${rolledClass} ${successfulHitClass} dice-clickable" 
+      data-side="${side}" data-value="${diceValue}" data-round="${roundCounter}"
+      onclick="handleOriginalDieClick(this, '${side}', ${diceValue}, ${roundCounter})">
+<i class="fa-solid fa-dice-${diceNames[i]} fa-stack-1x"></i>
+<span class="fa-stack-1x fa-inverse ${side}-dice-result-count" data-value="${diceValue}">${
       counts[diceValue] ? "x" + counts[diceValue] : ""
     }</span>
-    </span>`;
+</span>`;
   }
 
   return output; // Returning the HTML instead of updating the DOM
@@ -396,6 +398,41 @@ function scrollToResults() {
   if (remainingSpace <= 400) {
     // Scroll to the round results section
     button.scrollIntoView({ behavior: "smooth" });
+  }
+}
+
+function handleOriginalDieClick(element, side, diceValue, round) {
+  console.log("Inside original dice");
+
+  if (round !== roundCounter && round !== roundCounter - 1) {
+    console.log("Round mismatch. Exiting...");
+    return;
+  }
+
+  const rerollButton = document.querySelector(
+    `.reroll-button[data-side="${side}"]`
+  );
+  console.log(
+    "Reroll button display:",
+    rerollButton ? rerollButton.style.display : "Button not found"
+  );
+
+  if (rerollButton && rerollButton.style.display === "none") {
+    console.log("Reroll button is not visible. Exiting...");
+    return;
+  }
+
+  const countElement = element.querySelector(".fa-inverse");
+  const currentCount = countElement
+    ? parseInt(countElement.textContent.replace("x", "") || "1", 10)
+    : 1;
+  const rerollCount = rerollQueue[side][diceValue] || 0;
+
+  if (currentCount > rerollCount) {
+    console.log(`Queueing reroll for ${side} and dieValue ${diceValue}`);
+    queueReroll(side, diceValue, element);
+    console.log("another successful call to URQUI.");
+    updateRerollQueueUI(side);
   }
 }
 
@@ -566,56 +603,8 @@ document.addEventListener("click", function (event) {
     return; // Exit the function after handling reroll queue click
   }
 
-  // For original dice
-  const dieElement = event.target.closest(".fa-stack");
-  if (dieElement !== null) {
-    console.log("Inside original dice");
-    const dieRound = parseInt(dieElement.getAttribute("data-round"), 10);
-    // Adjusting the roundCounter by -1
-    if (dieRound !== roundCounter && dieRound !== roundCounter - 1) {
-      console.log("Round mismatch. Exiting...");
-      return;
-    }
-
-    const dieValue = parseInt(dieElement.getAttribute("data-value"), 10);
-    const side = dieElement.getAttribute("data-side");
-
-    const rerollButton = document.querySelector(
-      `.reroll-button[data-side="${side}"]`
-    );
-    console.log(
-      "Reroll button display:",
-      rerollButton ? rerollButton.style.display : "Button not found"
-    );
-
-    if (rerollButton && rerollButton.style.display === "none") {
-      console.log("Reroll button is not visible. Exiting...");
-      return; // Do not proceed with reroll if the reroll button is not visible
-    }
-
-    // If the click is within the original dice
-    if (event.target.closest(".col-sm-6")) {
-      console.log("Inside col-sm-6");
-      // Get the current count of this die value
-      const countElement = dieElement.querySelector(".fa-inverse");
-      const currentCount = countElement
-        ? parseInt(countElement.textContent.replace("x", "") || "1", 10)
-        : 1;
-
-      // Get the current reroll count for this die value
-      const rerollCount = rerollQueue[side][dieValue] || 0;
-
-      // If the current count is greater than the reroll count, queue the reroll
-      if (currentCount > rerollCount) {
-        console.log(`Queueing reroll for ${side} and dieValue ${dieValue}`);
-        queueReroll(side, dieValue, dieElement);
-        console.log("another successful call to URQUI.");
-        updateRerollQueueUI(side);
-      }
-    }
-  } else {
-    console.log("dieElement is null");
-  }
+  // The logic for original dice is now handled by handleOriginalDieClick
+  // So, no need to include it here
 });
 
 //reroll button
