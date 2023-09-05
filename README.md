@@ -1,14 +1,31 @@
 # Star Trek Ascendancy Apps
-This project is to streamline the board game, [Star Trek Ascendancy](https://boardgamegeek.com/boardgame/193949/star-trek-ascendancy), for activities that could be helped with a pretty calculator.
 
-|App| Brief  | Why | 
-|--|--|--|
-|Combat Dice Calculator  | Automated die rolling based on weapon and shield technology.*  | During the late game, combat rolls can take up to 10 minutes.**|
-|Turn Order Randomizer | Quickly create turn orders. |Handing out turn order cards takes an unnecessary 2 minutes per round, and turn order cards are often misplaced. |
+These are apps designed to enhance and speed up gameplay for [Star Trek Ascendancy](https://boardgamegeek.com/boardgame/193949/star-trek-ascendancy), a strategy board game for 1-9 players. These apps are particularly useful for the Dominion War variant with large fleet sizes and at least four players.
 
- **Edge cases are not directly supported such as  first strike, “always hit on 5’s & 6’s”, starbases, and re-rolls; the app will allow you to manually edit the surviving ships at the end of each round so players can handle the nuances after the main rolls have completed.*
- 
-***Combat slows down, especially in the Dominion War variant, when fleets of 20 vs 20 ships fight and each side has low die probabilities-to-hit and many special effects to modify rolls. This is especially challenging in games of 6 players where 4 players are stuck in spectator mode.*
+## Apps and Features
 
-See live version here: [https://z6pnh5-5000.csb.app/](https://z6pnh5-5000.csb.app/)
-*Hosting by and created with CodeSandbox.io.*
+### Combat Dice Calculator
+![Combat Dice Calculator Preview](https://z6pnh5-5000.csb.app/favicon/preview-dice-calculator.png)
+- Streamlines dice rolling
+- Handles ships, starbases, weapons, shields, and rerolls
+
+### Turn Order Randomizer
+![Turn Order Randomizer Preview](https://z6pnh5-5000.csb.app/favicon/preview-turn-order.png)
+- Beautiful turn order randomization
+- Supports the 9 official factions
+- Uses the Fisher-Yates Shuffle algorithm
+
+## Live Demo and Source Code
+- Live Version: [https://z6pnh5-5000.csb.app/](https://z6pnh5-5000.csb.app/)
+- Source Code: [GitHub](https://codesandbox.io/p/github/covertsonic/star_trek_ascendancy_apps/main)
+
+**Note**: Hosting by and created with CodeSandbox.io. It may take a moment for the virtual machine to boot up.
+
+## Installation and Usage
+Vanilla HTMl/CSS/JavaScript.  Just drop anywhere
+
+## Contributing
+If you want to make changes, send me a pull request.
+
+## License
+Feel free to copy and make this better, and send me a link when you do!
