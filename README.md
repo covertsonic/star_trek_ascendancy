@@ -14,6 +14,7 @@ These are apps designed to enhance and speed up gameplay for [Star Trek Ascendan
 - Beautiful turn order randomization
 - Supports the 9 official factions
 - Uses the Fisher-Yates Shuffle algorithm
+- Special thanks to DevKev for the artwork from his Tabletop Simulator [*Star Trek Ascendancy (Ultimate Edition)*](https://steamcommunity.com/sharedfiles/filedetails/?id=1559499743)
 
 ## Live Demo and Source Code
 - Live Version: [https://z6pnh5-5000.csb.app/](https://z6pnh5-5000.csb.app/)
