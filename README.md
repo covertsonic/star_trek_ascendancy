@@ -17,10 +17,8 @@ These are apps designed to enhance and speed up gameplay for [Star Trek Ascendan
 - Special thanks to DevKev for the artwork from his Tabletop Simulator [*Star Trek Ascendancy (Ultimate Edition)*](https://steamcommunity.com/sharedfiles/filedetails/?id=1559499743)
 
 ## Live Demo and Source Code
-- Live Version: [https://z6pnh5-5000.csb.app/](https://z6pnh5-5000.csb.app/)
+- Live Version: [https://z6pnh5-5000.csb.app/](https://z6pnh5-5000.csb.app/) You may have to refresh page; this is a codesandbox.io project.
 - Source Code: [GitHub](https://codesandbox.io/p/github/covertsonic/star_trek_ascendancy_apps/main)
-
-**Note**: Hosting by and created with CodeSandbox.io. It may take a moment for the virtual machine to boot up.
 
 ## Installation and Usage
 Vanilla HTMl/CSS/JavaScript.  Just drop anywhere
