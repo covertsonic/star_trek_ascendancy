@@ -2,6 +2,7 @@
   padding:2px;
 }
 
+
 /* starbase */
 .starbase-button {
   position: relative;
@@ -25,14 +26,15 @@
 }
 
 .starbase-image {
-  width: 40px; /* Adjust as needed */
-  height: 40px; /* Adjust as needed */
+  width: 40px; 
+  height: 40px; 
 }
 
 .starbase-text,
 .starbase-die-count {
   margin-left: 5px;
   font-weight: bold;
+  color: #007bff;
 }
 
 
@@ -88,6 +90,7 @@ body {
 /* Star Trek Aesthetics */
 .card {
   height: 175px; /* Set a fixed height */
+  min-width: 115px;
 }
 .card-body {
   padding: .5em;
