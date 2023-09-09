@@ -1,5 +1,5 @@
 .btn-light {
-  padding:2px;
+  padding: 2px;
 }
 
 
@@ -10,13 +10,15 @@
   border: none;
   cursor: pointer;
   display: flex;
-  align-items: center; /* Vertically aligns the items */
+  align-items: center;
+  /* Vertically aligns the items */
 }
 
 .starbase-info {
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Vertically aligns the text and small tag */
+  justify-content: center;
+  /* Vertically aligns the text and small tag */
 }
 
 .starbase-button.frosted .starbase-image,
@@ -26,8 +28,8 @@
 }
 
 .starbase-image {
-  width: 40px; 
-  height: 40px; 
+  width: 40px;
+  height: 40px;
 }
 
 .starbase-text,
@@ -43,7 +45,8 @@
 }
 
 .starbase-button object {
-  pointer-events: none; /* This makes sure the SVG doesn't capture the event */
+  pointer-events: none;
+  /* This makes sure the SVG doesn't capture the event */
 }
 
 /* Add your other styles here */
@@ -53,12 +56,15 @@
 
 /* Style to make the SVG color similar to Deep Space Nine */
 #starbaseSVG {
-  fill: #4D4D4F; /* You can adjust this color */
+  fill: #4D4D4F;
+  /* You can adjust this color */
 }
+
 /* end of starbase */
 
 body {
-  font-family: "Trebuchet MS", sans-serif; /* Trebuchet feels somewhat sci-fi-ish, adjust to taste */
+  font-family: "Trebuchet MS", sans-serif;
+  /* Trebuchet feels somewhat sci-fi-ish, adjust to taste */
 }
 
 .hidden {
@@ -70,8 +76,10 @@ body {
 }
 
 .potential-hit {
-  border: 2px solid #007BFF; /* Adjust as needed */
-  border-radius: 4px; /* Optional */
+  border: 2px solid #007BFF;
+  /* Adjust as needed */
+  border-radius: 4px;
+  /* Optional */
 }
 
 .rolled-die {
@@ -80,18 +88,26 @@ body {
 
 .successful-hit {
   color: rgb(216, 0, 0);
-  /*border-color: darkred;*/ /* this is not as intuitive as setting to the "hits on" text */
-  border-color: #007BFF;/* set to  same color as "hits on" element */
+  /*border-color: darkred;*/
+  /* this is not as intuitive as setting to the "hits on" text */
+  border-color: #007BFF;
+  /* set to  same color as "hits on" element */
 }
+
 .hit-border {
-  /*border-color: darkred;*/ /* this is not as intuitive as setting to the "hits on" text */
-  border-color: #007BFF;/* set to  same color as "hits on" element */
+  /*border-color: darkred;*/
+  /* this is not as intuitive as setting to the "hits on" text */
+  border-color: #007BFF;
+  /* set to  same color as "hits on" element */
 }
+
 /* Star Trek Aesthetics */
 .card {
-  height: 175px; /* Set a fixed height */
+  height: 175px;
+  /* Set a fixed height */
   min-width: 115px;
 }
+
 .card-body {
   padding: .5em;
 }
@@ -103,7 +119,7 @@ body {
   height: 1.2em;
 }
 
-.fa-inverse{
+.fa-inverse {
   color: #000;
   font-size: 32px;
   font-weight: bold;
@@ -111,15 +127,18 @@ body {
 
 
 #attackerResults .dice-result-count {
-  font-size: 30px; /* Adjust the font size to your preference */
+  font-size: 30px;
+  /* Adjust the font size to your preference */
   text-align: center;
 }
 
 
-.big-num { /* numbers at the top for ship/weapons/shields */
+.big-num {
+  /* numbers at the top for ship/weapons/shields */
   font-size: 36px;
   text-align: center;
 }
+
 /* New styles for buttons */
 .card button {
   width: 40px;
@@ -127,7 +146,8 @@ body {
 }
 
 .col-sm-6:not(:last-child) {
-  border-right: 1px solid #e0e0e0; /* Adding gentle line separating the attacker and defender */
+  border-right: 1px solid #e0e0e0;
+  /* Adding gentle line separating the attacker and defender */
 }
 
 /* Specific color and size styling for Ship/Weapon/Shield elements */
@@ -137,12 +157,15 @@ body {
 }
 
 .ship-icon {
-  width: 24px; /* or whatever size you want */
-  height: 24px; /* or whatever size you want */
+  width: 24px;
+  /* or whatever size you want */
+  height: 24px;
+  /* or whatever size you want */
 }
 
-.ship-icon object, .ship-icon img {
-  fill: #007bff; 
+.ship-icon object,
+.ship-icon img {
+  fill: #007bff;
 }
 
 .weapon-icon,
@@ -170,18 +193,42 @@ body {
 
 
 
-.fa-inverse-reroll{
+.fa-inverse-reroll {
   color: white;
-    font-size: 32px;
-    font-weight: bold;
+  font-size: 32px;
+  font-weight: bold;
 }
+
 .reroll-queue-label {
   color: grey;
-  margin-bottom: 5px;  /* Adjust for desired spacing */
+  margin-bottom: 5px;
+  /* Adjust for desired spacing */
 }
 
 .dice-clickable:hover {
   cursor: pointer;
-  background-color: rgba(0, 0, 0, 0.1); /* Adds a light gray background */
-  border-radius: 4px; /* Rounds the corners */
+  background-color: rgba(0, 0, 0, 0.1);
+  /* Adds a light gray background */
+  border-radius: 4px;
+  /* Rounds the corners */
+}
+
+.tight-line-height {
+  line-height: 1;
+}
+
+.text-xs {
+  font-size: 0.5rem;
+  /* Adjust as needed */
+}
+
+
+#probabilityWrapper {
+  width: 165px;
+  padding-left: 5px;
+}
+
+.mw-per-side {
+  min-width: 390px;
+  /* ware are fortunate this is close to 384, half of the breakpoint of col-md which is 768 */
 }

@@ -1,255 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" href="../favicon/favicon.ico" type="image/x-icon">
-    <link rel="manifest" href="../favicon/site.webmanifest">
-    <link rel="apple-touch-icon" href="../favicon/apple-touch-icon.png">
-    
-    <title>Star Trek Ascendancy Combat Calculator</title>
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-    />
-    <link rel="stylesheet" href="styles.css" />
-    <script src="scripts.js" defer></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-  </head>
 
-  <body>
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-sm-6">
-          <!-- Attacker Title & Dice section -->
-          <div class="d-flex align-items-center justify-content-between mb-3">
-            <!-- Adding some bottom margin -->
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" href="../favicon/favicon.ico" type="image/x-icon">
+  <link rel="manifest" href="../favicon/site.webmanifest">
+  <link rel="apple-touch-icon" href="../favicon/apple-touch-icon.png">
+
+  <title>Star Trek Ascendancy Combat Calculator</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="scripts.js" defer></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+
+<body>
+  <div class="container-fluid">
+
+    <!-- row will have both attacker and defender -->
+    <div class="row">
+
+      <!-- This is the attacker side (left)-->
+      <div class="col-md-6 mw-per-side">
+
+        <!-- Attacker Title & Dice section -->
+        <div class="d-flex align-items-center justify-content-between mb-3">
+          <div class="d-flex align-items-center">
             <h3>Attacker</h3>
-            <div>
-              <span class="text-muted small mr-2">hits on</span>
-              <div class="dice-section" id="attackerDiceSection"></div>
+            <div id="probabilityWrapper" class="tight-line-height">
+              <!-- State 1: Show Probabilities Text -->
+              <div id="showProbabilitiesState" onclick="switchState('existingCodeState')" style="cursor: pointer;">
+                <span class="text-muted text-xs">&nbsp; &nbsp; show probabilities</span>
+              </div>
+
+              <!-- State 2: Existing Code -->
+              <div id="existingCodeState" style="display: none; cursor: pointer;"
+                onclick="switchState('verboseExplanationState')">
+                <div class="probabilities">
+                  <span class="text-muted small mr-2">&nbsp; Exp Hits: <span id="attackerExpectedHits">X</span> | <span
+                      id="defenderExpectedHits">Y</span></span>
+                  <br />
+                  <span class="text-muted small mr-2">&nbsp; Win %: <span id="attackerWinProb">A%</span> | <span
+                      id="defenderWinProb">B%</span></span>
+                </div>
+              </div>
+
+              <!-- State 3: Verbose Explanation -->
+              <div id="verboseExplanationState" style="display: none; cursor: pointer;"
+                onclick="switchState('showProbabilitiesState')" class="text-muted text-xs">
+
+                "Exp Hits" and "Win %" show expected hits and win probability, respectively, for both the attacker and
+                defender.
+
+              </div>
             </div>
+
+
           </div>
-          <div class="row d-flex justify-content-center">
-            <!-- Attacker Cards -->
-            <div class="col-4 d-flex justify-content-center">
-              <div class="card">
-                <div class="card-body d-flex flex-column align-items-center">
-                  <div class="d-flex align-items-center">
-                    <object type="image/svg+xml" data="./images/enterprise-d.svg" class="ship-icon"></object>
-                    <!-- Ship Icon -->
-                    <span class="cardheadertext">Ships</span>
-                  </div>   
-                  <span class="big-num" id="attackerShips">3</span>
-                  <div class="d-flex">
-                    <button
-                      onclick="incrementValue('attackerShips', 1, 45,0)"
-                      class="btn-light"
-                    >
-                      +
-                    </button>
-                    <button
-                      onclick="incrementValue('attackerShips', -1, 45,0)"
-                      class="btn-light"
-                    >
-                      -
-                    </button>
-                  </div>
-                  <div class="d-flex mt-2">
-                    <!-- mt-2 gives a top margin for spacing -->
-                    <button
-                      onclick="incrementValue('attackerShips', 5, 45,0)"
-                      class="btn-light"
-                    >
-                      +5
-                    </button>
-                    <button
-                      onclick="incrementValue('attackerShips', -5, 45,0)"
-                      class="btn-light"
-                    >
-                      -5
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-4 d-flex justify-content-center">
-              <div class="card">
-                <div class="card-body d-flex flex-column align-items-center">
-                  <div class="d-flex align-items-center">
-                    <i class="fas fa-crosshairs weapon-icon"></i>
-                    <!-- Weapon Icon -->
-                    <span class="cardheadertext">Weapons Hit On</small></span>
-                  </div>
-                  <span class="big-num hidden" id="attackerWeapons">1</span>
-                  <span class="big-num" id="attackerWeaponsDisplay">5+</span>
-                
-                  <div class="d-flex">
-                    <button
-                      onclick="incrementValue('attackerWeapons', 1, 5,1)"
-                      class="weapon-shield-btn btn-light"
-                    >
-                      +
-                    </button>
-                    <button
-                      onclick="incrementValue('attackerWeapons', -1, 5,1)"
-                      class="weapon-shield-btn btn-light"
-                    >
-                      -
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-4 d-flex justify-content-center">
-              <div class="card">
-                <div class="card-body d-flex flex-column align-items-center">
-                  <div class="d-flex align-items-center">
-                    <i class="fas fa-shield-alt shield-icon"></i>
-                    <!-- Shield Icon -->
-                    <span class="cardheadertext">Shields</span>
-                  </div>
-                  <span class="big-num" id="attackerShields">0</span>
-                  <div class="d-flex align-items-center">
-                    <button
-                      onclick="incrementValue('attackerShields', 1, 4,0)"
-                      class="weapon-shield-btn btn-light"
-                    >
-                      +
-                    </button>
-                    <button
-                      onclick="incrementValue('attackerShields', -1, 4,0)"
-                      class="weapon-shield-btn btn-light"
-                    >
-                      -
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div class="tight-line-height">
+            <span class="text-muted small mr-2">dice hit on</span>
+            <div class="dice-section" id="attackerDiceSection"></div>
           </div>
         </div>
 
-        <div class="col-sm-6">
-          <!-- Defender Title & Dice section -->
-          <div class="d-flex align-items-center justify-content-between mb-3">
-            <div class="d-flex align-items-center">
-              <h3>Defender</h3>
-              <button id="starbaseButton" class="starbase-button frosted">
-                <object type="image/svg+xml" data="./images/ds9.svg" class="starbase-image" id="starbaseSVG"></object>
-                <div class="starbase-info">
-                  <span class="starbase-text"></span>
-                  <span class="starbase-die-count">+0 die</span>
+
+
+
+        <div class="row d-flex justify-content-center">
+          <!-- Attacker Cards -->
+          <div class="col-4 d-flex justify-content-center">
+            <div class="card">
+              <div class="card-body d-flex flex-column align-items-center">
+                <div class="d-flex align-items-center">
+                  <object type="image/svg+xml" data="./images/enterprise-d.svg" class="ship-icon"></object>
+                  <!-- Ship Icon -->
+                  <span class="cardheadertext">Ships</span>
                 </div>
-              </button>
-              
-              
-            </div>
-            <div>
-              <span class="text-muted small mr-2">hits on</span>
-              <div class="dice-section" id="defenderDiceSection"></div>
+                <span class="big-num" id="attackerShips">5</span>
+                <div class="d-flex">
+                  <button onclick="incrementValue('attackerShips', 1, 45,0)" class="btn-light">
+                    +
+                  </button>
+                  <button onclick="incrementValue('attackerShips', -1, 45,0)" class="btn-light">
+                    -
+                  </button>
+                </div>
+                <div class="d-flex mt-2">
+                  <!-- mt-2 gives a top margin for spacing -->
+                  <button onclick="incrementValue('attackerShips', 5, 45,0)" class="btn-light">
+                    +5
+                  </button>
+                  <button onclick="incrementValue('attackerShips', -5, 45,0)" class="btn-light">
+                    -5
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
-          <div class="row d-flex justify-content-center">
-            <!-- Defender Cards -->
-            <div class="col-4 d-flex justify-content-center">
-              <div class="card">
-                <div class="card-body d-flex flex-column align-items-center">
-                  <div class="d-flex align-items-center">
-                    <object type="image/svg+xml" data="./images/defiant.svg" class="ship-icon"></object>
-                    <!-- Ship Icon -->
-                    <span class="cardheadertext">Ships</span>
-                  </div>                  
-                  <span class="big-num" id="defenderShips">3</span>
-                  <div class="d-flex">
-                    <button
-                      onclick="incrementValue('defenderShips', 1, 45,0)"
-                      class="btn-light"
-                    >
-                      +
-                    </button>
-                    <button
-                      onclick="incrementValue('defenderShips', -1, 45,0)"
-                      class="btn-light"
-                    >
-                      -
-                    </button>
-                  </div>
-                  <div class="d-flex mt-2">
-                    <!-- mt-2 gives a top margin for spacing -->
-                    <button
-                      onclick="incrementValue('defenderShips', 5, 45,0)"
-                      class="btn-light"
-                    >
-                      +5
-                    </button>
-                    <button
-                      onclick="incrementValue('defenderShips', -5, 45,0)"
-                      class="btn-light"
-                    >
-                      -5
-                    </button>
-                  </div>
+
+          <div class="col-4 d-flex justify-content-center">
+            <div class="card">
+              <div class="card-body d-flex flex-column align-items-center">
+                <div class="d-flex align-items-center">
+                  <i class="fas fa-crosshairs weapon-icon"></i>
+                  <!-- Weapon Icon -->
+                  <span class="cardheadertext">Weapons Hit On</small></span>
+                </div>
+                <span class="big-num hidden" id="attackerWeapons">1</span>
+                <span class="big-num" id="attackerWeaponsDisplay">5+</span>
+
+                <div class="d-flex">
+                  <button onclick="incrementValue('attackerWeapons', 1, 5,1)" class="weapon-shield-btn btn-light">
+                    +
+                  </button>
+                  <button onclick="incrementValue('attackerWeapons', -1, 5,1)" class="weapon-shield-btn btn-light">
+                    -
+                  </button>
                 </div>
               </div>
             </div>
+          </div>
 
-            <div class="col-4 d-flex justify-content-center">
-              <div class="card">
-                <div class="card-body d-flex flex-column align-items-center">
-                  <div class="d-flex align-items-center">
-                    <i class="fas fa-crosshairs weapon-icon"></i>
-                    <span class="cardheadertext">Weapons Hit On</span>
-                  </div>
-                  <span class="big-num hidden" id="defenderWeapons">1</span>
-                  <span class="big-num" id="defenderWeaponsDisplay">5+</span>
-
-                  <div class="d-flex align-items-center">
-                    <button
-                      onclick="incrementValue('defenderWeapons', 1, 5,1)"
-                      class="weapon-shield-btn btn-light"
-                    >
-                      +
-                    </button>
-                    <button
-                      onclick="incrementValue('defenderWeapons', -1, 5,1)"
-                      class="weapon-shield-btn btn-light"
-                    >
-                      -
-                    </button>
-                  </div>
+          <div class="col-4 d-flex justify-content-center">
+            <div class="card">
+              <div class="card-body d-flex flex-column align-items-center">
+                <div class="d-flex align-items-center">
+                  <i class="fas fa-shield-alt shield-icon"></i>
+                  <!-- Shield Icon -->
+                  <span class="cardheadertext">Shields</span>
                 </div>
-              </div>
-            </div>
-
-            <div class="col-4 d-flex justify-content-center">
-              <div class="card">
-                <div class="card-body d-flex flex-column align-items-center">
-                  <div class="d-flex align-items-center">
-                    <i class="fas fa-shield-alt shield-icon"></i>
-                    <!-- Shield Icon -->
-                    <span class="cardheadertext">Shields</span>
-                  </div>
-                  <span class="big-num" id="defenderShields">0</span>
-                  <div class="d-flex align-items-center">
-                    <button
-                      onclick="incrementValue('defenderShields', 1, 4,0)"
-                      class="weapon-shield-btn btn-light"
-                    >
-                      +
-                    </button>
-                    <button
-                      onclick="incrementValue('defenderShields', -1, 4,0)"
-                      class="weapon-shield-btn btn-light"
-                    >
-                      -
-                    </button>
-                  </div>
+                <span class="big-num" id="attackerShields">0</span>
+                <div class="d-flex align-items-center">
+                  <button onclick="incrementValue('attackerShields', 1, 4,0)" class="weapon-shield-btn btn-light">
+                    +
+                  </button>
+                  <button onclick="incrementValue('attackerShields', -1, 4,0)" class="weapon-shield-btn btn-light">
+                    -
+                  </button>
                 </div>
               </div>
             </div>
@@ -257,38 +145,128 @@
         </div>
       </div>
 
-      <div class="d-flex mt-2 justify-content-start">
-        <button
-          class="btn btn-primary"
-          id="simulateCombatButton"
-          onclick="simulateDiceRolls()"
-        >
-          Simulate Combat
-        </button>
-        <button
-          class="btn btn-primary"
-          id="simulateNextRoundButton"
-          onclick="continueToNextRound()"
-          style="display: none;"
-        >
-          Simulate Next Round
-        </button>
-        <button
-          class="btn btn-secondary mx-2"
-          id="resetCombatButton"
-          onclick="confirmReset()"
-          style="display: none;"
-          data-confirm="false"
-        >
-          Reset Combat
-        </button>
-      </div>
 
-      <div class="row mt-4">
-        <div class="col-12">
-          <div id="attackerResults"></div>
+      <div class="col-md-6 mw-per-side">
+        <!-- Defender Title & Dice section -->
+        <div class="d-flex align-items-center justify-content-between mb-3">
+          <div class="d-flex align-items-center">
+            <h3>Defender</h3>
+            <button id="starbaseButton" class="starbase-button frosted">
+              <object type="image/svg+xml" data="./images/ds9.svg" class="starbase-image" id="starbaseSVG"></object>
+              <div class="starbase-info">
+                <span class="starbase-text"></span>
+                <span class="starbase-die-count">+0 die</span>
+              </div>
+            </button>
+
+
+          </div>
+          <div class="tight-line-height">
+            <span class="text-muted small mr-2">dice hit on</span>
+            <div class="dice-section" id="defenderDiceSection"></div>
+          </div>
+        </div>
+        <div class="row d-flex justify-content-center">
+          <!-- Defender Cards -->
+          <div class="col-4 d-flex justify-content-center">
+            <div class="card">
+              <div class="card-body d-flex flex-column align-items-center">
+                <div class="d-flex align-items-center">
+                  <object type="image/svg+xml" data="./images/defiant.svg" class="ship-icon"></object>
+                  <!-- Ship Icon -->
+                  <span class="cardheadertext">Ships</span>
+                </div>
+                <span class="big-num" id="defenderShips">5</span>
+                <div class="d-flex">
+                  <button onclick="incrementValue('defenderShips', 1, 45,0)" class="btn-light">
+                    +
+                  </button>
+                  <button onclick="incrementValue('defenderShips', -1, 45,0)" class="btn-light">
+                    -
+                  </button>
+                </div>
+                <div class="d-flex mt-2">
+                  <!-- mt-2 gives a top margin for spacing -->
+                  <button onclick="incrementValue('defenderShips', 5, 45,0)" class="btn-light">
+                    +5
+                  </button>
+                  <button onclick="incrementValue('defenderShips', -5, 45,0)" class="btn-light">
+                    -5
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-4 d-flex justify-content-center">
+            <div class="card">
+              <div class="card-body d-flex flex-column align-items-center">
+                <div class="d-flex align-items-center">
+                  <i class="fas fa-crosshairs weapon-icon"></i>
+                  <span class="cardheadertext">Weapons Hit On</span>
+                </div>
+                <span class="big-num hidden" id="defenderWeapons">1</span>
+                <span class="big-num" id="defenderWeaponsDisplay">5+</span>
+
+                <div class="d-flex align-items-center">
+                  <button onclick="incrementValue('defenderWeapons', 1, 5,1)" class="weapon-shield-btn btn-light">
+                    +
+                  </button>
+                  <button onclick="incrementValue('defenderWeapons', -1, 5,1)" class="weapon-shield-btn btn-light">
+                    -
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-4 d-flex justify-content-center">
+            <div class="card">
+              <div class="card-body d-flex flex-column align-items-center">
+                <div class="d-flex align-items-center">
+                  <i class="fas fa-shield-alt shield-icon"></i>
+                  <!-- Shield Icon -->
+                  <span class="cardheadertext">Shields</span>
+                </div>
+                <span class="big-num" id="defenderShields">0</span>
+                <div class="d-flex align-items-center">
+                  <button onclick="incrementValue('defenderShields', 1, 4,0)" class="weapon-shield-btn btn-light">
+                    +
+                  </button>
+                  <button onclick="incrementValue('defenderShields', -1, 4,0)" class="weapon-shield-btn btn-light">
+                    -
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </body>
+
+    <div class="d-flex mt-2 justify-content-start">
+      <button class="btn btn-primary" id="simulateCombatButton" onclick="simulateDiceRolls()">
+        Simulate Combat
+      </button>
+      <button class="btn btn-primary" id="simulateNextRoundButton" onclick="continueToNextRound()"
+        style="display: none;">
+        Simulate Next Round
+      </button>
+      <button class="btn btn-secondary mx-2" id="resetCombatButton" onclick="confirmReset()" style="display: none;"
+        data-confirm="false">
+        Reset Combat
+      </button>
+    </div>
+
+    <div class="row mt-4">
+      <div class="col-12">
+        <div id="attackerResults"></div>
+        <span id="rerollReminder" class="text-muted small hidden">To reroll, simply click a die result to queue the
+          result for reroll. Once in the reroll queue, click Reroll.</span>
+
+      </div>
+    </div>
+  </div>
+</body>
+
 </html>
