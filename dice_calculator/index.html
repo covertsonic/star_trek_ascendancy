@@ -28,11 +28,19 @@
           <div class="d-flex align-items-center justify-content-between mb-3">
             <!-- Adding some bottom margin -->
             <h3>Attacker</h3>
-            <div>
-              <span class="text-muted small mr-2">hits on</span>
-              <div class="dice-section" id="attackerDiceSection"></div>
+            
+            <div class="tight-line-height probabilities">
+                <span class="text-muted small mr-2">Exp Hits: <span id="attackerExpectedHits">X</span> | <span id="defenderExpectedHits">Y</span></span>
+                <br />
+                <span class="text-muted small mr-2">Win %: <span id="attackerWinProb">A%</span> | <span id="defenderWinProb">B%</span></span>
+            
+              </div>
+            <div>   
+
+              <span class="text-muted small mr-2">Hits on</span>
+                <div class="dice-section" id="attackerDiceSection"></div>
             </div>
-          </div>
+        </div>        
           <div class="row d-flex justify-content-center">
             <!-- Attacker Cards -->
             <div class="col-4 d-flex justify-content-center">

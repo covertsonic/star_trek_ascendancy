@@ -185,3 +185,7 @@ body {
   background-color: rgba(0, 0, 0, 0.1); /* Adds a light gray background */
   border-radius: 4px; /* Rounds the corners */
 }
+
+.tight-line-height {
+  line-height: 1em;
+}

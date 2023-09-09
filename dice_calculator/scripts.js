@@ -10,6 +10,8 @@ function incrementValue(elementId, incrementBy, max, min) {
   if (currentValue < min) currentValue = min;
 
   element.innerText = currentValue;
+  
+  updateStats();//update the win probabilities after the number of ships changes
 }
 
 function rollDie() {
@@ -209,6 +211,7 @@ const starbaseText = isStarbaseActive ? " (+base)" : "";
   document.getElementById("resetCombatButton").style.display = "block";
   scrollToElement(roundCounter, 'attacker');
 
+  updateStats();//update win probabilities and expected hits after a round result is complete
 }
 
 function continueToNextRound() {
@@ -331,6 +334,9 @@ function updateDiceSection() {
     weaponsDisplayValueFromLevel(
       +document.getElementById("defenderWeapons").innerText
     );
+
+    
+    updateStats();//update the win probabilities after weapons or shields stats change
 }
 
 //convert weapon level to the label that should show
@@ -833,25 +839,68 @@ document.addEventListener("DOMContentLoaded", function() {
       starbaseButton.classList.add("frosted");
       starbaseDieCount.textContent = "+0 die";
     }
+    
+    updateStats();//update the win probabilities after starbase on/off changes
   });
 });
 
 
 
-/* 
-Done:
-Remove event listener on original die
-Fix responsive design
-Fix that the reroll queue has a slightly different format
-Reroll on subsequent rounds doesn't work after global event listener refactor
-Post reroll results won't go negative if someone rerolled hits which became non-hits
-Scroll down when clicking reroll or when initiating the reroll queue for the first time
-To help with first strike (we are not implementing first strike), make it so resetting doesn't reset ship counts
-Add starbase toggle for defender which will add one die result
+function calculateExpectedHits(ships, weaponLevel, opponentShieldLevel, hasStarbase = false) {
+  let expectedHits = 0;
+  let hitProbability = (7 - (6 - weaponLevel + opponentShieldLevel)) / 6;
 
-To Dos:
-none!
+    // If there's a starbase and at least one ship, add an extra die roll
+    if (hasStarbase && ships > 0) {
+      ships += 1;
+  }
+  expectedHits = ships * hitProbability;
 
-Other notes:
-Global event listeners are maddness!  I will avoid in future projects.  
-*/
+  return expectedHits;
+}
+
+
+//Secttions below to give stats prior to rolling
+function calculateWinProbability(attackerShips, defenderShips, attackerExpectedHits, defenderExpectedHits) {
+  let attackerWinProb = 0;
+  let defenderWinProb = 0;
+
+  if (attackerExpectedHits > defenderShips && defenderExpectedHits < attackerShips) {
+      attackerWinProb = 100;
+  } else if (defenderExpectedHits > attackerShips && attackerExpectedHits < defenderShips) {
+      defenderWinProb = 100;
+  } else {
+      let totalHits = attackerExpectedHits + defenderExpectedHits;
+      attackerWinProb = (attackerExpectedHits / totalHits) * 100;
+      defenderWinProb = 100 - attackerWinProb;
+  }
+
+  return {
+      attacker: attackerWinProb,
+      defender: defenderWinProb
+  };
+}
+
+function updateStats() {
+  let attackerShips = parseInt(document.getElementById("attackerShips").innerText, 10);
+  let defenderShips = parseInt(document.getElementById("defenderShips").innerText, 10);
+  const attackerWeapons = parseInt(document.getElementById("attackerWeapons").innerText, 10);
+  const defenderWeapons = parseInt(document.getElementById("defenderWeapons").innerText, 10);
+  const attackerShields = parseInt(document.getElementById("attackerShields").innerText, 10);
+  const defenderShields = parseInt(document.getElementById("defenderShields").innerText, 10);
+
+  // Check if the starbase is active
+  const isStarbaseActive = !document.getElementById("starbaseButton").classList.contains("frosted");
+
+  let attackerExpectedHits = calculateExpectedHits(attackerShips, attackerWeapons, defenderShields);
+  let defenderExpectedHits = calculateExpectedHits(defenderShips, defenderWeapons, attackerShields, isStarbaseActive);
+
+  let winProbabilities = calculateWinProbability(attackerShips, defenderShips, attackerExpectedHits, defenderExpectedHits);
+
+  document.getElementById("attackerExpectedHits").innerText = attackerExpectedHits.toFixed(2);
+  document.getElementById("defenderExpectedHits").innerText = defenderExpectedHits.toFixed(2);
+  document.getElementById("attackerWinProb").innerText = winProbabilities.attacker.toFixed(2) + '%';
+  document.getElementById("defenderWinProb").innerText = winProbabilities.defender.toFixed(2) + '%';
+}
+
+updateStats();
