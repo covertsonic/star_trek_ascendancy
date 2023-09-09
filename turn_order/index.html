@@ -28,156 +28,26 @@
   <body>
     <div class="floating-player-count">
       <div class="player-count-container">
-        <h2 class="player-count text-center">
+        <h2 class="player-h text-center">
           Players: &nbsp;
-          <span class="player-number">0</span>
+          <span class="player-count">0</span>
         </h2>
+        <div class="custom-control custom-switch mr-10px">
+          <input type="checkbox" class="custom-control-input" id="fanMadeToggle">
+          <label class="custom-control-label" for="fanMadeToggle">Fan-Made</label>
+        </div>
         <button class="btn btn-primary begin mt-1">Begin</button> <!-- Begin button inside the container -->
       </div>
     </div>
     
     
+    
 
     <div class="container">
-      <div class="row factions-grid">
-        <div class="instructions-container col-12">
-          <p class="instructions">Select faction opponents then click begin.</p>
-        </div>
-        <!-- Federation -->
-        <div class="col-md-4 mb-4">
-          <div class="faction card" data-faction="Federation">
-            <img
-              src="images/faction-federation.png"
-              alt="Federation"
-              class="card-img-top"
-            />
-            <div class="overlay card-img-overlay"></div>
-            <div class="selected-banner d-none">
-              <i class="fa fa-check-circle text-success"></i> &nbsp;Selected
-            </div>
-          </div>
-        </div>
-
-        <!-- Romulan -->
-        <div class="col-md-4 mb-4">
-          <div class="faction card" data-faction="Romulan">
-            <img
-              src="images/faction-romulan.png"
-              alt="Romulan"
-              class="card-img-top"
-            />
-            <div class="overlay card-img-overlay"></div>
-            <div class="selected-banner d-none">
-              <i class="fa fa-check-circle text-success"></i> &nbsp;Selected
-            </div>
-          </div>
-        </div>
-
-        <!-- Klingons -->
-        <div class="col-md-4 mb-4">
-          <div class="faction card" data-faction="Klingon">
-            <img
-              src="images/faction-klingon.png"
-              alt="Klingon"
-              class="card-img-top"
-            />
-            <div class="overlay card-img-overlay"></div>
-            <div class="selected-banner d-none">
-              <i class="fa fa-check-circle text-success"></i> &nbsp;Selected
-            </div>
-          </div>
-        </div>
-
-        <!-- Cardassians -->
-        <div class="col-md-4 mb-4">
-          <div class="faction card" data-faction="Cardassian">
-            <img
-              src="images/faction-cardassian.png"
-              alt="Cardassian"
-              class="card-img-top"
-            />
-            <div class="overlay card-img-overlay"></div>
-            <div class="selected-banner d-none">
-              <i class="fa fa-check-circle text-success"></i> &nbsp;Selected
-            </div>
-          </div>
-        </div>
-
-        <!-- Ferengi -->
-        <div class="col-md-4 mb-4">
-          <div class="faction card" data-faction="Ferengi">
-            <img
-              src="images/faction-ferengi.png"
-              alt="Ferengi"
-              class="card-img-top"
-            />
-            <div class="overlay card-img-overlay"></div>
-            <div class="selected-banner d-none">
-              <i class="fa fa-check-circle text-success"></i> &nbsp;Selected
-            </div>
-          </div>
-        </div>
-
-        <!-- Vulcans -->
-        <div class="col-md-4 mb-4">
-          <div class="faction card" data-faction="Vulcan">
-            <img
-              src="images/faction-vulcan.png"
-              alt="Vulcan"
-              class="card-img-top"
-            />
-            <div class="overlay card-img-overlay"></div>
-            <div class="selected-banner d-none">
-              <i class="fa fa-check-circle text-success"></i> &nbsp;Selected
-            </div>
-          </div>
-        </div>
-
-        <!-- Andorians -->
-        <div class="col-md-4 mb-4">
-          <div class="faction card" data-faction="Andorian">
-            <img
-              src="images/faction-andorian.png"
-              alt="Andorian"
-              class="card-img-top"
-            />
-            <div class="overlay card-img-overlay"></div>
-            <div class="selected-banner d-none">
-              <i class="fa fa-check-circle text-success"></i> &nbsp;Selected
-            </div>
-          </div>
-        </div>
-
-        <!-- Breen -->
-        <div class="col-md-4 mb-4">
-          <div class="faction card" data-faction="Breen">
-            <img
-              src="images/faction-breen.png"
-              alt="Breen"
-              class="card-img-top"
-            />
-            <div class="overlay card-img-overlay"></div>
-            <div class="selected-banner d-none">
-              <i class="fa fa-check-circle text-success"></i> &nbsp;Selected
-            </div>
-          </div>
-        </div>
-
-        <!-- Dominion -->
-        <div class="col-md-4 mb-4">
-          <div class="faction card" data-faction="Dominion">
-            <img
-              src="images/faction-dominion.png"
-              alt="Dominion"
-              class="card-img-top"
-            />
-            <div class="overlay card-img-overlay"></div>
-            <div class="selected-banner d-none">
-              <i class="fa fa-check-circle text-success"></i> &nbsp;Selected
-            </div>
-          </div>
-        </div>
+      
+      <div id="faction-selection-grid">
       </div>
+      
 
       <!-- end of faction selection -->
 

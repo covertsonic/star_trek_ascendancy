@@ -31,7 +31,7 @@
   align-items: center; /* Center the player count vertically */
 }
 
-.player-count {
+.player-h {
   margin: 0 auto; /* Centering the text */
 }
 
@@ -107,6 +107,9 @@
 #turn-order-table {
   width: 100%;
   border-collapse: collapse;
+  /* deal with the overflow especially on mobile devices 
+  overflow-x: auto;
+  overflow: hidden;*/
 }
 
 #turn-order-table th,
@@ -127,7 +130,7 @@
   margin-right: 10px;
 }
 .faction-name-column {
-  width: 250px;
+  max-width: 250px;
   white-space: nowrap;
   text-align: left !important;
 }
@@ -148,4 +151,24 @@
 
 .hidden {
   display: none;
+}
+
+@keyframes glow {
+  0% {
+      opacity: 0.6;
+  }
+  50% {
+      opacity: 1;
+  }
+  100% {
+      opacity: 0.6;
+  }
+}
+
+.glowing {
+  animation: glow 1.5s infinite;
+}
+
+.mr-10px {
+  margin-right: 10px;
 }
