@@ -139,13 +139,15 @@ const defenderShipsText = uncappedDefenderShips < 0 ? `${uncappedDefenderShips} 
 
 const starbaseText = isStarbaseActive ? " (+base)" : "";
 
+
+
   // Construct a single row for the round:
   let roundResultHTML = `
   <div class="row mt-4 round-result" data-round="${roundCounter}">
       ${hiddenAttackerField}
     ${hiddenDefenderField}
   <!-- Attacker Section -->
-  <div class="col-sm-6">
+  <div class="col-md-6 mw-per-side">
       <div class="row">
           <div class="col-12">
               <hr>
@@ -162,7 +164,7 @@ const starbaseText = isStarbaseActive ? " (+base)" : "";
   </div>
 
   <!-- Defender Section -->
-  <div class="col-sm-6">
+  <div class="col-md-6 mw-per-side">
       <div class="row">
           <div class="col-12">
               <hr>
@@ -178,7 +180,6 @@ const starbaseText = isStarbaseActive ? " (+base)" : "";
       </div>
   </div>
 </div>
-
 `;
 
   // Append this row to the main results container
@@ -211,7 +212,21 @@ const starbaseText = isStarbaseActive ? " (+base)" : "";
   document.getElementById("resetCombatButton").style.display = "block";
   scrollToElement(roundCounter, 'attacker');
 
+  rerollReminderToggle();//handle reroll reminder after dice roll
   updateStats();//update win probabilities and expected hits after a round result is complete
+}
+
+function rerollReminderToggle(){
+  const rerollReminderElement = document.getElementById('rerollReminder');
+
+  // Check the value of roundCounter
+  if (roundCounter === 1) {
+      // If roundCounter is 1, remove the 'hidden' class to make the element visible
+      rerollReminderElement.classList.remove('hidden');
+  } else {
+      // Otherwise, add the 'hidden' class to hide the element
+      rerollReminderElement.classList.add('hidden');
+  }
 }
 
 function continueToNextRound() {
@@ -225,9 +240,9 @@ function resetCombat() {
   // Reset the round counter
   roundCounter = 0;
 
-  // Reset ship counts back to 3 if below 3
-document.getElementById("attackerShips").innerHTML = Math.max(3, parseInt(document.getElementById("attackerShips").innerHTML, 10)).toString();
-document.getElementById("defenderShips").innerHTML = Math.max(3, parseInt(document.getElementById("defenderShips").innerHTML, 10)).toString();
+  // Reset ship counts back to 5 if below 5
+document.getElementById("attackerShips").innerHTML = Math.max(5, parseInt(document.getElementById("attackerShips").innerHTML, 10)).toString();
+document.getElementById("defenderShips").innerHTML = Math.max(5, parseInt(document.getElementById("defenderShips").innerHTML, 10)).toString();
 
   // Clear the dice roll results
   document.getElementById("attackerResults").innerHTML = "";
@@ -245,6 +260,9 @@ document.getElementById("defenderShips").innerHTML = Math.max(3, parseInt(docume
   const starbaseDieCount = starbaseButton.querySelector(".starbase-die-count");
   starbaseButton.classList.add("frosted");
   starbaseDieCount.textContent = "+0 die";
+
+  rerollReminderToggle();//handle reroll reminder after round reset
+  updateStats();//update the win probabilities after round reset
 }
 
 function displayDiceRolls(rolls, weaponLevel, opponentShieldLevel, side) {
@@ -655,7 +673,7 @@ function handleReroll(side) {
   }
 
   const allStrongElements = Array.from(
-    currentRoundElement.querySelectorAll(`.col-sm-6 .col-12 > strong`)
+    currentRoundElement.querySelectorAll(`.col-md-6 .col-12 > strong`)
   );
 
   const originalRollsElement = allStrongElements.find((el) =>

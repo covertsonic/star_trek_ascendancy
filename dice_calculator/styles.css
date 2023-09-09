@@ -187,5 +187,18 @@ body {
 }
 
 .tight-line-height {
-  line-height: 1em;
+  line-height: 1;
+}
+.text-xs {
+  font-size: 0.5rem; /* Adjust as needed */
+}
+
+
+#probabilityWrapper {
+  width: 165px;
+  padding-left: 5px;
+}
+
+.mw-per-side {
+   min-width: 390px; /* ware are fortunate this is close to 384, half of the breakpoint of col-md which is 768 */
 }
