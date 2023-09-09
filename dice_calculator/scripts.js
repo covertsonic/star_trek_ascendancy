@@ -307,17 +307,28 @@ function confirmReset() {
     resetButton.classList.remove("btn-secondary");
     resetButton.classList.add("btn-danger");
     resetButton.setAttribute("data-confirm", "true");
+
+    // Set a timeout to reset the button after 3 seconds
+    setTimeout(function() {
+      if (resetButton.getAttribute("data-confirm") === "true") { // Check if the button is still in the confirm state
+        resetButtonToInitialState(resetButton);
+      }
+    }, 3000); // 3000 milliseconds = 3 seconds
+
   } else {
     // Execute the resetCombat() function when the button has been clicked a second time
     resetCombat();
-
-    // Reset the button to its initial state after the combat is reset
-    resetButton.innerHTML = "Reset Combat";
-    resetButton.classList.remove("btn-danger");
-    resetButton.classList.add("btn-secondary");
-    resetButton.setAttribute("data-confirm", "false");
+    resetButtonToInitialState(resetButton);
   }
 }
+
+function resetButtonToInitialState(button) {
+  button.innerHTML = "Reset Combat";
+  button.classList.remove("btn-danger");
+  button.classList.add("btn-secondary");
+  button.setAttribute("data-confirm", "false");
+}
+
 
 //for the dice in the header and the labels on the weapons:
 function updateDiceSection() {
