@@ -29,13 +29,32 @@
             <!-- Adding some bottom margin -->
             <h3>Attacker</h3>
             
-            <div class="tight-line-height probabilities">
-                <span class="text-muted small mr-2">Exp Hits: <span id="attackerExpectedHits">X</span> | <span id="defenderExpectedHits">Y</span></span>
-                <br />
-                <span class="text-muted small mr-2">Win %: <span id="attackerWinProb">A%</span> | <span id="defenderWinProb">B%</span></span>
-            
+
+            <div id="probabilityWrapper">
+              <!-- State 1: Show Probabilities Text -->
+              <div id="showProbabilitiesState" onclick="switchState('existingCodeState')" style="cursor: pointer;">
+                  <span class="text-muted small">Show <br />Probabilities</span>
               </div>
-            <div>   
+          
+              <!-- State 2: Existing Code -->
+              <div id="existingCodeState" style="display: none; cursor: pointer;" onclick="switchState('verboseExplanationState')">
+                  <div class="tight-line-height probabilities">
+                      <span class="text-muted small mr-2">Exp Hits: <span id="attackerExpectedHits">X</span> | <span id="defenderExpectedHits">Y</span></span>
+                      <br />
+                      <span class="text-muted small mr-2">Win %: <span id="attackerWinProb">A%</span> | <span id="defenderWinProb">B%</span></span>
+                  </div>
+              </div>
+          
+              <!-- State 3: Verbose Explanation -->
+              <div id="verboseExplanationState" style="display: none; cursor: pointer;" onclick="switchState('showProbabilitiesState')">
+                  <p class="text-muted small">
+                      "Exp Hits" represents the probabilities to hit for both the attacker and defender. "Win %" shows the probability of winning for both sides.
+                  </p>
+              </div>
+          </div>
+          
+          
+           
 
               <span class="text-muted small mr-2">Hits on</span>
                 <div class="dice-section" id="attackerDiceSection"></div>

@@ -860,6 +860,18 @@ function calculateExpectedHits(ships, weaponLevel, opponentShieldLevel, hasStarb
 }
 
 
+function switchState(targetState) {
+  // Hide all states
+  document.getElementById('showProbabilitiesState').style.display = 'none';
+  document.getElementById('existingCodeState').style.display = 'none';
+  document.getElementById('verboseExplanationState').style.display = 'none';
+
+  // Show the target state
+  document.getElementById(targetState).style.display = 'block';
+}
+
+
+
 //Secttions below to give stats prior to rolling
 function calculateWinProbability(attackerShips, defenderShips, attackerExpectedHits, defenderExpectedHits) {
   let attackerWinProb = 0;
