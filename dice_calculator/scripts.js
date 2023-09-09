@@ -839,6 +839,9 @@ function handleReroll(side) {
     rerollButton.style.display = "none";
   }
   scrollToElement(roundCounter, side);
+
+  
+  updateStats();//update win probabilities and expected hits after a reroll is complete
 }
 
 document.addEventListener("DOMContentLoaded", function () {
