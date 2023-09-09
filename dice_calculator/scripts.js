@@ -10,7 +10,7 @@ function incrementValue(elementId, incrementBy, max, min) {
   if (currentValue < min) currentValue = min;
 
   element.innerText = currentValue;
-  
+
   updateStats();//update the win probabilities after the number of ships changes
 }
 
@@ -33,8 +33,8 @@ function getHits(ships, weaponLevel, opponentShieldLevel) {
   return { hits: hits, rolls: rolls };
 }
 
-function hideAllRerollButtons(){
-    // Check for reroll buttons and hide them if they are still visible
+function hideAllRerollButtons() {
+  // Check for reroll buttons and hide them if they are still visible
   const rerollButtons = document.querySelectorAll('.reroll-button');
   let anyButtonVisible = false;
 
@@ -59,8 +59,8 @@ let roundCounter = 0;
 function simulateDiceRolls() {
   //check if any reroll buttons are still visible and close them
   hideAllRerollButtons();
-    // Increment round counter
-    roundCounter++;
+  // Increment round counter
+  roundCounter++;
 
   let attackerHits = 0;
   let defenderHits = 0;
@@ -108,12 +108,12 @@ function simulateDiceRolls() {
   );
 
   // Calculate uncapped ship counts
-const uncappedAttackerShips = attackerShips - defenderResults.hits;
-const uncappedDefenderShips = defenderShips - attackerResults.hits;
+  const uncappedAttackerShips = attackerShips - defenderResults.hits;
+  const uncappedDefenderShips = defenderShips - attackerResults.hits;
 
-// Add hidden fields to store uncapped ship counts
-const hiddenAttackerField = `<input type="hidden" id="uncappedAttackerShips${roundCounter}" value="${uncappedAttackerShips}">`;
-const hiddenDefenderField = `<input type="hidden" id="uncappedDefenderShips${roundCounter}" value="${uncappedDefenderShips}">`;
+  // Add hidden fields to store uncapped ship counts
+  const hiddenAttackerField = `<input type="hidden" id="uncappedAttackerShips${roundCounter}" value="${uncappedAttackerShips}">`;
+  const hiddenDefenderField = `<input type="hidden" id="uncappedDefenderShips${roundCounter}" value="${uncappedDefenderShips}">`;
 
 
   attackerShips = Math.max(0, uncappedAttackerShips); // Reducing attacker's ships based on defender's hits
@@ -134,10 +134,10 @@ const hiddenDefenderField = `<input type="hidden" id="uncappedDefenderShips${rou
   );
 
   // Update the text to indicate uncapped losses
-const attackerShipsText = uncappedAttackerShips < 0 ? `${uncappedAttackerShips} (0)` : attackerShips;
-const defenderShipsText = uncappedDefenderShips < 0 ? `${uncappedDefenderShips} (0)` : defenderShips;
+  const attackerShipsText = uncappedAttackerShips < 0 ? `${uncappedAttackerShips} (0)` : attackerShips;
+  const defenderShipsText = uncappedDefenderShips < 0 ? `${uncappedDefenderShips} (0)` : defenderShips;
 
-const starbaseText = isStarbaseActive ? " (+base)" : "";
+  const starbaseText = isStarbaseActive ? " (+base)" : "";
 
 
 
@@ -191,8 +191,8 @@ const starbaseText = isStarbaseActive ? " (+base)" : "";
   // Remove click events from previous rounds
   const previousRounds = document.querySelectorAll(
     '.round-result[data-round]:not([data-round="' +
-      roundCounter +
-      '"]) .dice-clickable'
+    roundCounter +
+    '"]) .dice-clickable'
   );
   previousRounds.forEach((diceElement) => {
     diceElement.classList.remove("dice-clickable");
@@ -216,16 +216,16 @@ const starbaseText = isStarbaseActive ? " (+base)" : "";
   updateStats();//update win probabilities and expected hits after a round result is complete
 }
 
-function rerollReminderToggle(){
+function rerollReminderToggle() {
   const rerollReminderElement = document.getElementById('rerollReminder');
 
   // Check the value of roundCounter
   if (roundCounter === 1) {
-      // If roundCounter is 1, remove the 'hidden' class to make the element visible
-      rerollReminderElement.classList.remove('hidden');
+    // If roundCounter is 1, remove the 'hidden' class to make the element visible
+    rerollReminderElement.classList.remove('hidden');
   } else {
-      // Otherwise, add the 'hidden' class to hide the element
-      rerollReminderElement.classList.add('hidden');
+    // Otherwise, add the 'hidden' class to hide the element
+    rerollReminderElement.classList.add('hidden');
   }
 }
 
@@ -241,8 +241,8 @@ function resetCombat() {
   roundCounter = 0;
 
   // Reset ship counts back to 5 if below 5
-document.getElementById("attackerShips").innerHTML = Math.max(5, parseInt(document.getElementById("attackerShips").innerHTML, 10)).toString();
-document.getElementById("defenderShips").innerHTML = Math.max(5, parseInt(document.getElementById("defenderShips").innerHTML, 10)).toString();
+  document.getElementById("attackerShips").innerHTML = Math.max(5, parseInt(document.getElementById("attackerShips").innerHTML, 10)).toString();
+  document.getElementById("defenderShips").innerHTML = Math.max(5, parseInt(document.getElementById("defenderShips").innerHTML, 10)).toString();
 
   // Clear the dice roll results
   document.getElementById("attackerResults").innerHTML = "";
@@ -289,9 +289,8 @@ function displayDiceRolls(rolls, weaponLevel, opponentShieldLevel, side) {
       data-side="${side}" data-value="${diceValue}" data-round="${roundCounter}"
       onclick="handleOriginalDieClick(this, '${side}', ${diceValue}, ${roundCounter})">
 <i class="fa-solid fa-dice-${diceNames[i]} fa-stack-1x"></i>
-<span class="fa-stack-1x fa-inverse ${side}-dice-result-count" data-value="${diceValue}">${
-      counts[diceValue] ? "x" + counts[diceValue] : ""
-    }</span>
+<span class="fa-stack-1x fa-inverse ${side}-dice-result-count" data-value="${diceValue}">${counts[diceValue] ? "x" + counts[diceValue] : ""
+      }</span>
 </span>`;
   }
 
@@ -353,8 +352,8 @@ function updateDiceSection() {
       +document.getElementById("defenderWeapons").innerText
     );
 
-    
-    updateStats();//update the win probabilities after weapons or shields stats change
+
+  updateStats();//update the win probabilities after weapons or shields stats change
 }
 
 //convert weapon level to the label that should show
@@ -407,7 +406,7 @@ function scrollToElement(roundCounter, side) {
   if (element) {
     const rect = element.getBoundingClientRect();
     const windowHeight = (window.innerHeight || document.documentElement.clientHeight);
-    
+
     // Check if the element is not fully in view
     if (rect.bottom > windowHeight || rect.top < 0) {
       element.scrollIntoView({ behavior: "smooth", block: "end" });
@@ -423,7 +422,7 @@ function scrollToElement(roundCounter, side) {
 
 
 function handleOriginalDieClick(element, side, diceValue, round) {
-//  console.log("Executing the handleOriginalDieClick");
+  //  console.log("Executing the handleOriginalDieClick");
 
   if (round !== roundCounter && round !== roundCounter) {
     console.log("Round mismatch. Exiting...");
@@ -433,13 +432,13 @@ function handleOriginalDieClick(element, side, diceValue, round) {
   const rerollButton = document.querySelector(
     `.reroll-button[data-side="${side}"][data-round="${round}"]`
   );
-/*  console.log(
-    "Reroll button display:",
-    rerollButton ? rerollButton.style.display : "Button not found"
-  );*/
+  /*  console.log(
+      "Reroll button display:",
+      rerollButton ? rerollButton.style.display : "Button not found"
+    );*/
 
   if (rerollButton && rerollButton.style.display === "none") {
-//    console.log("Reroll button exists but is not visible (indicating this round has already been rerolled). Exiting...");
+    //    console.log("Reroll button exists but is not visible (indicating this round has already been rerolled). Exiting...");
     return;
   }
 
@@ -464,7 +463,7 @@ function queueReroll(side, diceValue, clickedElement) {
   // Check if the clicked die's round matches the current round
   const dieRound = parseInt(clickedElement.getAttribute("data-round"), 10);
 
-  if (dieRound !== roundCounter ) {
+  if (dieRound !== roundCounter) {
     return; // Do not proceed with reroll
   }
 
@@ -489,7 +488,7 @@ function queueReroll(side, diceValue, clickedElement) {
     rerollQueue[side][diceValue] = 0;
   }
 
-//  console.log("queueRoll function is calling the updateRerollQueueUI.");
+  //  console.log("queueRoll function is calling the updateRerollQueueUI.");
   updateRerollQueueUI(side);
 }
 
@@ -549,7 +548,7 @@ function updateRerollQueueUI(side) {
   rerollButton.textContent = "Reroll";
   // Add data-side attribute to distinguish between attacker and defender
   rerollButton.setAttribute("data-side", side);
-  rerollButton.setAttribute("data-round", roundCounter); 
+  rerollButton.setAttribute("data-round", roundCounter);
   rerollQueueElement.insertBefore(rerollButton, label.nextSibling);
 
   // Add line break
@@ -560,9 +559,8 @@ function updateRerollQueueUI(side) {
   for (let diceValue = 1; diceValue <= 6; diceValue++) {
     const count = rerollQueue[side][diceValue] || 0;
     const diceElement = document.createElement("span");
-    diceElement.className = `fa-stack dice-clickable ${
-      count > 0 ? "reroll-dice" : "default-die"
-    }`;
+    diceElement.className = `fa-stack dice-clickable ${count > 0 ? "reroll-dice" : "default-die"
+      }`;
     diceElement.dataset.value = diceValue;
     diceElement.dataset.count = count;
 
@@ -591,14 +589,14 @@ function updateRerollQueueUI(side) {
  */
 // Add a global click event listener
 document.addEventListener("click", function (event) {
-//  console.log("Click event triggered");
+  //  console.log("Click event triggered");
 
   // Determine if the click is within the reroll queue first
   if (event.target.closest(".reroll-queue")) {
-//    console.log("Inside reroll queue");
+    //    console.log("Inside reroll queue");
     const dieElement = event.target.closest(".fa-stack");
     if (dieElement === null) {
-//      console.log("No die element found in reroll queue.");
+      //      console.log("No die element found in reroll queue.");
       return; // Exit if no die element is found
     }
 
@@ -609,13 +607,13 @@ document.addEventListener("click", function (event) {
       ? "attacker"
       : "defender";
 
-      const rerollButton = document.querySelector(
-        `.reroll-button[data-side="${side}"][data-round="${roundCounter}"]`
-      );
-/*    console.log(
-      "Reroll button display:",
-      rerollButton ? rerollButton.style.display : "Button not found"
-    );*/
+    const rerollButton = document.querySelector(
+      `.reroll-button[data-side="${side}"][data-round="${roundCounter}"]`
+    );
+    /*    console.log(
+          "Reroll button display:",
+          rerollButton ? rerollButton.style.display : "Button not found"
+        );*/
 
     if (rerollButton && rerollButton.style.display === "none") {
       //console.log("Reroll button is not visible. Exiting...");
@@ -623,9 +621,9 @@ document.addEventListener("click", function (event) {
     }
 
     if (rerollQueue[side][dieValue] > 0) {
-/*      console.log(
-        `Decrementing rerollQueue for ${side} and dieValue ${dieValue}`
-      );*/
+      /*      console.log(
+              `Decrementing rerollQueue for ${side} and dieValue ${dieValue}`
+            );*/
       rerollQueue[side][dieValue]--;
       //console.log("successfully calling URQUI.");
       updateRerollQueueUI(side);
@@ -698,7 +696,7 @@ function handleReroll(side) {
   const dieElements = Array.from(
     originalRollsParentElement.querySelectorAll(".col-12 > .rolled-die")
   );
-  
+
   dieElements.forEach((dieElement) => {
     const dieValue = parseInt(dieElement.getAttribute("data-value"), 10);
     const countElement = dieElement.querySelector(".fa-inverse");
@@ -748,28 +746,28 @@ function handleReroll(side) {
 
 
   // Retrieve uncapped ship counts from hidden fields
-const uncappedAttackerShipsBefore = parseInt(
-  document.getElementById(`uncappedAttackerShips${roundCounter}`).value,
-  10
-);
-const uncappedDefenderShipsBefore = parseInt(
-  document.getElementById(`uncappedDefenderShips${roundCounter}`).value,
-  10
-);
+  const uncappedAttackerShipsBefore = parseInt(
+    document.getElementById(`uncappedAttackerShips${roundCounter}`).value,
+    10
+  );
+  const uncappedDefenderShipsBefore = parseInt(
+    document.getElementById(`uncappedDefenderShips${roundCounter}`).value,
+    10
+  );
 
-/*
-  let attackerShipsBefore = parseInt(
-    document.getElementById("attackerShips").innerText,
-    10
-  );
-  let defenderShipsBefore = parseInt(
-    document.getElementById("defenderShips").innerText,
-    10
-  );
-*/
+  /*
+    let attackerShipsBefore = parseInt(
+      document.getElementById("attackerShips").innerText,
+      10
+    );
+    let defenderShipsBefore = parseInt(
+      document.getElementById("defenderShips").innerText,
+      10
+    );
+  */
   // Use uncapped values for calculations
-let attackerShipsBefore = uncappedAttackerShipsBefore;
-let defenderShipsBefore = uncappedDefenderShipsBefore;
+  let attackerShipsBefore = uncappedAttackerShipsBefore;
+  let defenderShipsBefore = uncappedDefenderShipsBefore;
 
   let originalHits = 0;
   for (let i = 0; i < unmodifiedOriginalRolls.length; i++) {
@@ -786,7 +784,7 @@ let defenderShipsBefore = uncappedDefenderShipsBefore;
   }
 
   let changeInHitsFromReroll = finalHits - originalHits;
-  
+
   let defenderShipsRemaining, attackerShipsRemaining;
   if (side === "attacker") {
     defenderShipsRemaining = Math.max(
@@ -815,18 +813,16 @@ let defenderShipsBefore = uncappedDefenderShipsBefore;
 
   const rerollResultHTML = `
     <p>
-      Rerolled Dice Results (${
-        rerolledDice.length
-      } rerolled) - <span class="successful-hit">${changeInHitsFromReroll} Hit</span>
+      Rerolled Dice Results (${rerolledDice.length
+    } rerolled) - <span class="successful-hit">${changeInHitsFromReroll} Hit</span>
       <br/>
       ${rerolledDiceHTML}
     </p>
     <p>
-      <strong>Round ${
-        roundCounter
-      } Final (Post Reroll) - ${capitalizeFirstLetter(
-    side
-  )} - <span class="successful-hit">${finalHits} Hit</span></strong>
+      <strong>Round ${roundCounter
+    } Final (Post Reroll) - ${capitalizeFirstLetter(
+      side
+    )} - <span class="successful-hit">${finalHits} Hit</span></strong>
       <br />
       ${roundSummary}
       <br/>
@@ -845,11 +841,11 @@ let defenderShipsBefore = uncappedDefenderShipsBefore;
   scrollToElement(roundCounter, side);
 }
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
   const starbaseButton = document.getElementById("starbaseButton");
   const starbaseDieCount = starbaseButton.querySelector(".starbase-die-count");
 
-  starbaseButton.addEventListener("click", function() {
+  starbaseButton.addEventListener("click", function () {
     if (starbaseButton.classList.contains("frosted")) {
       starbaseButton.classList.remove("frosted");
       starbaseDieCount.textContent = "+1 die";
@@ -857,7 +853,7 @@ document.addEventListener("DOMContentLoaded", function() {
       starbaseButton.classList.add("frosted");
       starbaseDieCount.textContent = "+0 die";
     }
-    
+
     updateStats();//update the win probabilities after starbase on/off changes
   });
 });
@@ -868,9 +864,9 @@ function calculateExpectedHits(ships, weaponLevel, opponentShieldLevel, hasStarb
   let expectedHits = 0;
   let hitProbability = (7 - (6 - weaponLevel + opponentShieldLevel)) / 6;
 
-    // If there's a starbase and at least one ship, add an extra die roll
-    if (hasStarbase && ships > 0) {
-      ships += 1;
+  // If there's a starbase and at least one ship, add an extra die roll
+  if (hasStarbase && ships > 0) {
+    ships += 1;
   }
   expectedHits = ships * hitProbability;
 
@@ -896,18 +892,18 @@ function calculateWinProbability(attackerShips, defenderShips, attackerExpectedH
   let defenderWinProb = 0;
 
   if (attackerExpectedHits > defenderShips && defenderExpectedHits < attackerShips) {
-      attackerWinProb = 100;
+    attackerWinProb = 100;
   } else if (defenderExpectedHits > attackerShips && attackerExpectedHits < defenderShips) {
-      defenderWinProb = 100;
+    defenderWinProb = 100;
   } else {
-      let totalHits = attackerExpectedHits + defenderExpectedHits;
-      attackerWinProb = (attackerExpectedHits / totalHits) * 100;
-      defenderWinProb = 100 - attackerWinProb;
+    let totalHits = attackerExpectedHits + defenderExpectedHits;
+    attackerWinProb = (attackerExpectedHits / totalHits) * 100;
+    defenderWinProb = 100 - attackerWinProb;
   }
 
   return {
-      attacker: attackerWinProb,
-      defender: defenderWinProb
+    attacker: attackerWinProb,
+    defender: defenderWinProb
   };
 }
 
