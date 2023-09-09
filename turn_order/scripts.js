@@ -1,5 +1,79 @@
-/* global $ */
-// scripts.js
+let factionsConfig = [];
+
+fetch('factionConfig.json')
+  .then(response => response.json())
+  .then(data => {
+    factionsConfig = data;
+    // Filter out the factions where fan-made is true for initial display
+    const officialFactions = factionsConfig.filter(faction => !faction["fan-made"]);
+    // Call the function to generate the HTML here
+    const factionsHTML = generateFactionsHTML(officialFactions);
+    document.getElementById('faction-selection-grid').innerHTML = factionsHTML;
+    // Now, you should also reinitialize the factions variable and its event listeners
+    initializeFactionEventListeners();
+  })
+  .catch(error => console.error('Error loading factionsConfig:', error));
+
+
+function generateFactionsHTML(factions) {
+  let html = `
+      <div class="row factions-grid">
+        <div class="instructions-container col-12">
+          <p class="instructions">Select faction opponents then click begin.</p>
+        </div>
+  `;
+
+  factions.forEach(faction => {
+    html += `
+      <div class="col-md-4 mb-4">
+        <div class="faction card" data-faction="${faction.name}">
+          <img src="images/${faction.image}" alt="${faction.name}" class="card-img-top" />
+          <div class="overlay card-img-overlay"></div>
+          <div class="selected-banner d-none">
+            <i class="fa fa-check-circle text-success"></i> &nbsp;Selected
+          </div>
+        </div>
+      </div>
+    `;
+  });
+
+  html += `</div>`;
+  return html;
+}
+
+// Insert the generated HTML into the faction-selection-grid div
+const officialFactions = factionsConfig.filter(faction => !faction["fan-made"]);
+document.getElementById('faction-selection-grid').innerHTML = generateFactionsHTML(officialFactions);
+
+
+document.getElementById('fanMadeToggle').addEventListener('change', function() {
+  if (this.checked) {
+    // Show all factions
+    displayFactions(factionsConfig);
+  } else {
+    // Show only non-fan-made factions
+    const officialFactions = factionsConfig.filter(faction => !faction["fan-made"]);
+    displayFactions(officialFactions);
+  }
+});
+
+function displayFactions(factions) {
+  document.getElementById('faction-selection-grid').innerHTML = generateFactionsHTML(factions);
+  
+  // Reset player count to 0
+  document.querySelector(".player-count").textContent = '0';
+  
+  // Remove the glowing effect from the beginButton
+  beginButton.classList.remove("glowing");
+  
+  // Reinitialize the event listeners for the factions after updating the displayed factions
+  initializeFactionEventListeners();
+}
+
+
+
+
+
 
 //delete this section after debugging the turn order
 window.addEventListener("load", function () {
@@ -24,25 +98,7 @@ let toggleShowAllTurnsButton = document.querySelector(".btn.show-all-turns");
 localStorage.setItem("showOldTurns", false); //default to hiding excess turns
 let selectedFactions = [];
 
-// Selecting factions
-factions.forEach((faction) => {
-  faction.addEventListener("click", () => {
-    // Toggle the active state for the faction.
-    faction.classList.toggle("active");
-
-    // Find the 'overlay' and 'selected-banner' elements inside the faction.
-    let overlay = faction.querySelector(".overlay");
-    let selectedBanner = faction.querySelector(".selected-banner");
-
-    // Toggle the visibility of the overlay and selected banner.
-    overlay.classList.toggle("d-none");
-    selectedBanner.classList.toggle("d-none");
-
-    // Update the player count.
-    let activeFactions = document.querySelectorAll(".faction.active").length;
-    playerCount.textContent = `Players: ${activeFactions}`;
-  });
-});
+//
 
 // Event listener for the begin button
 beginButton.addEventListener("click", () => {
@@ -77,29 +133,35 @@ function initializeTurnOrder() {
   // Clear any existing rows
   tableBody.innerHTML = "";
 
-  selectedFactions.forEach((faction) => {
-    const row = document.createElement("tr");
+  selectedFactions.forEach((factionName) => {
+    // Find the faction config for the selected faction
+    const faction = factionsConfig.find(f => f.name === factionName);
 
-    // Faction cell
-    const factionCell = document.createElement("td");
-    factionCell.className = "faction-name-column";
-    const img = document.createElement("img");
-    img.src = `images/faction-${faction.toLowerCase()}.png`;
-    img.alt = faction;
-    factionCell.appendChild(img);
-    const nameSpan = document.createElement("span");
-    nameSpan.textContent = faction;
-    nameSpan.className = "";
-    factionCell.appendChild(nameSpan);
-    row.appendChild(factionCell);
+    if (faction) {
+      const row = document.createElement("tr");
 
-    // Turn 1 cell (empty for now)
-    //const turn1Cell = document.createElement("td");
-    //row.appendChild(turn1Cell);
+      // Faction cell
+      const factionCell = document.createElement("td");
+      factionCell.className = "faction-name-column";
+      const img = document.createElement("img");
+      img.src = `images/${faction.image}`;
+      img.alt = faction.name; // This will only show if the image is broken
+      factionCell.appendChild(img);
 
-    tableBody.appendChild(row);
+      // Add faction name
+      const nameSpan = document.createElement("span");
+      nameSpan.textContent = faction.name;
+      factionCell.appendChild(nameSpan);
+
+      row.appendChild(factionCell);
+
+      tableBody.appendChild(row);
+    }
   });
 }
+
+
+
 
 // Event listener for the randomize turn order button
 randomizeButton.addEventListener("click", () => {
@@ -221,7 +283,7 @@ function limitVisibleTurns() {
     window.innerWidth ||
     document.documentElement.clientWidth ||
     document.body.clientWidth;
-  if (windowWidth < 400) {
+  if (windowWidth <= 768) {
     turnLimitStartsAt = 0;
   } else {
     turnLimitStartsAt = 2;
@@ -265,23 +327,27 @@ toggleShowAllTurnsButton.addEventListener("click", () => {
   toggleTurns();
 });
 
-// Function to toggle turns
+// Function to toggle old turn visibility
 function toggleTurns() {
   // Check if the old turns are currently shown or not set
   var showOldTurns = localStorage.getItem("showOldTurns");
 
-  // Update the button's text
-  if (showOldTurns === "true") {
-    //buton was set to show old turns (true); now limit
-    toggleShowAllTurnsButton.innerText = "Show All";
+  if (showOldTurns === "true") {//if it was true then make it false and then limit the view
     localStorage.setItem("showOldTurns", "false");
     limitVisibleTurns();
   } else {
-    toggleShowAllTurnsButton.innerText = "Hide Old";
     localStorage.setItem("showOldTurns", "true");
     unlimitVisibleTurns();
   }
+
+  // Update the button's text based on the new value in localStorage
+  showOldTurns = localStorage.getItem("showOldTurns");
+  toggleShowAllTurnsButton.innerText = (showOldTurns === "true") ? "Hide Old" : "Show All";
+
 }
+
+
+
 
 function reorderFactionsByCurrentRound() {
   const tableBody = document
@@ -318,4 +384,36 @@ function shuffleArray(array) {
   }
 
   return array;
+}
+
+function initializeFactionEventListeners() {
+  let factions = document.querySelectorAll(".faction");
+  let playerCount = document.querySelector(".player-count");
+
+  // Selecting factions
+  factions.forEach((faction) => {
+    faction.addEventListener("click", () => {
+      // Toggle the active state for the faction.
+      faction.classList.toggle("active");
+
+      // Find the 'overlay' and 'selected-banner' elements inside the faction.
+      let overlay = faction.querySelector(".overlay");
+      let selectedBanner = faction.querySelector(".selected-banner");
+
+      // Toggle the visibility of the overlay and selected banner.
+      overlay.classList.toggle("d-none");
+      selectedBanner.classList.toggle("d-none");
+
+      // Update the player count.
+      let activeFactions = document.querySelectorAll(".faction.active").length;
+      playerCount.textContent = `${activeFactions}`;
+
+      // Check if at least two factions are selected
+      if (activeFactions >= 2) {
+        beginButton.classList.add("glowing");
+      } else {
+        beginButton.classList.remove("glowing");
+      }
+    });
+  });
 }

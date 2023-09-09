@@ -1,0 +1,102 @@
+[
+  {
+    "name": "Federation",
+    "image": "faction-united-federation-of-planets.png",
+    "fan-made": false
+  },
+  {
+    "name": "Romulan",
+    "image": "faction-romulan-star-empire.png",
+    "fan-made": false
+  },
+  {
+    "name": "Klingon",
+    "image": "faction-klingon-empire.png",
+    "fan-made": false
+  },
+  {
+    "name": "Cardassian",
+    "image": "faction-cardassian-union.png",
+    "fan-made": false
+  },
+  {
+    "name": "Ferengi",
+    "image": "faction-ferengi-alliance.png",
+    "fan-made": false
+  },
+  {
+    "name": "Vulcan",
+    "image": "faction-vulcan-high-command.png",
+    "fan-made": false
+  },
+  {
+    "name": "Andorian",
+    "image": "faction-andorian-empire.png",
+    "fan-made": false
+  },
+  {
+    "name": "Breen",
+    "image": "faction-breen-confederacy.png",
+    "fan-made": false
+  },
+  {
+    "name": "Dominion",
+    "image": "faction-dominion.png",
+    "fan-made": false
+  },
+  {
+    "name": "Bajoran Republic",
+    "image": "faction-bajoran-republic.png",
+    "fan-made": true
+  },
+  {
+    "name": "Borg",
+    "image": "faction-borg.png",
+    "fan-made": true
+  },
+  {
+    "name": "Hirogen Hunters",
+    "image": "faction-hirogen-hunters.png",
+    "fan-made": true
+  },
+  {
+    "name": "Orion Cartel",
+    "image": "faction-orion-cartel.png",
+    "fan-made": true
+  },
+  {
+    "name": "Orion Hegemony",
+    "image": "faction-orion-hegemony.png",
+    "fan-made": true
+  },
+  {
+    "name": "Orion Syndicate",
+    "image": "faction-orion-syndicate.png",
+    "fan-made": true
+  },
+  {
+    "name": "Pakleds",
+    "image": "faction-pakleds.png",
+    "fan-made": true
+  },
+  {
+    "name": "Species 8472",
+    "image": "faction-species-8472.png",
+    "fan-made": true
+  },
+  {
+    "name": "Suliban Cabal",
+    "image": "faction-suliban-cabal.png",
+    "fan-made": true
+  },
+  {
+    "name": "Tellarite Union",
+    "image": "faction-tellarite-union.png",
+    "fan-made": true
+  },
+  {
+    "name": "Tholian Assembly",
+    "image": "faction-tholian-assembly.png",
+    "fan-made": true
+  }
+]
