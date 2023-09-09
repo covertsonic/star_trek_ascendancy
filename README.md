@@ -17,7 +17,7 @@ These are apps designed to enhance and speed up gameplay for [Star Trek Ascendan
 - Special thanks to DevKev for the artwork from his Tabletop Simulator [*Star Trek Ascendancy (Ultimate Edition)*](https://steamcommunity.com/sharedfiles/filedetails/?id=1559499743)
 
 ## Live Demo and Source Code
-- Live Version: [https://covertsonic.github.io/star_trek_ascendancy_apps/](https://covertsonic.github.io/star_trek_ascendancy_apps/) You may have to refresh page; this is a codesandbox.io project.
+- Live Version: [https://covertsonic.github.io/star_trek_ascendancy_apps/](https://covertsonic.github.io/star_trek_ascendancy_apps/)
 - Source Code: [GitHub](https://codesandbox.io/p/github/covertsonic/star_trek_ascendancy_apps/main)
 
 ## Installation and Usage
