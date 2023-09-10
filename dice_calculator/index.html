@@ -22,12 +22,12 @@
     <div class="row">
 
       <!-- This is the attacker side (left)-->
-      <div class="col-md-6 mw-per-side">
+      <div class="col-md-6 mw-per-side mb-3">
 
         <!-- Attacker Title & Dice section -->
         <div class="d-flex align-items-center justify-content-between mb-3">
           <div class="d-flex align-items-center">
-            <h3>Attacker</h3>
+            <h3 class="no-margin mt-2">Attacker</h3>
             <div id="probabilityWrapper" class="tight-line-height">
               <!-- State 1: Show Probabilities Text -->
               <div id="showProbabilitiesState" onclick="switchState('existingCodeState')" style="cursor: pointer;">
@@ -79,20 +79,20 @@
                 </div>
                 <span class="big-num" id="attackerShips">5</span>
                 <div class="d-flex">
-                  <button onclick="incrementValue('attackerShips', 1, 45,0)" class="btn-light">
-                    +
-                  </button>
                   <button onclick="incrementValue('attackerShips', -1, 45,0)" class="btn-light">
                     -
+                  </button>
+                  <button onclick="incrementValue('attackerShips', 1, 45,0)" class="btn-light">
+                    +
                   </button>
                 </div>
                 <div class="d-flex mt-2">
                   <!-- mt-2 gives a top margin for spacing -->
-                  <button onclick="incrementValue('attackerShips', 5, 45,0)" class="btn-light">
-                    +5
-                  </button>
                   <button onclick="incrementValue('attackerShips', -5, 45,0)" class="btn-light">
                     -5
+                  </button>
+                  <button onclick="incrementValue('attackerShips', 5, 45,0)" class="btn-light">
+                    +5
                   </button>
                 </div>
               </div>
@@ -111,11 +111,11 @@
                 <span class="big-num" id="attackerWeaponsDisplay">5+</span>
 
                 <div class="d-flex">
-                  <button onclick="incrementValue('attackerWeapons', 1, 5,1)" class="weapon-shield-btn btn-light">
-                    +
-                  </button>
                   <button onclick="incrementValue('attackerWeapons', -1, 5,1)" class="weapon-shield-btn btn-light">
                     -
+                  </button>
+                  <button onclick="incrementValue('attackerWeapons', 1, 5,1)" class="weapon-shield-btn btn-light">
+                    +
                   </button>
                 </div>
               </div>
@@ -132,11 +132,11 @@
                 </div>
                 <span class="big-num" id="attackerShields">0</span>
                 <div class="d-flex align-items-center">
-                  <button onclick="incrementValue('attackerShields', 1, 4,0)" class="weapon-shield-btn btn-light">
-                    +
-                  </button>
                   <button onclick="incrementValue('attackerShields', -1, 4,0)" class="weapon-shield-btn btn-light">
                     -
+                  </button>
+                  <button onclick="incrementValue('attackerShields', 1, 4,0)" class="weapon-shield-btn btn-light">
+                    +
                   </button>
                 </div>
               </div>
@@ -150,7 +150,7 @@
         <!-- Defender Title & Dice section -->
         <div class="d-flex align-items-center justify-content-between mb-3">
           <div class="d-flex align-items-center">
-            <h3>Defender</h3>
+            <h3 class="no-margin mt-2">Defender</h3>
             <button id="starbaseButton" class="starbase-button frosted">
               <object type="image/svg+xml" data="./images/ds9.svg" class="starbase-image" id="starbaseSVG"></object>
               <div class="starbase-info">
@@ -178,20 +178,20 @@
                 </div>
                 <span class="big-num" id="defenderShips">5</span>
                 <div class="d-flex">
-                  <button onclick="incrementValue('defenderShips', 1, 45,0)" class="btn-light">
-                    +
-                  </button>
                   <button onclick="incrementValue('defenderShips', -1, 45,0)" class="btn-light">
                     -
+                  </button>
+                  <button onclick="incrementValue('defenderShips', 1, 45,0)" class="btn-light">
+                    +
                   </button>
                 </div>
                 <div class="d-flex mt-2">
                   <!-- mt-2 gives a top margin for spacing -->
-                  <button onclick="incrementValue('defenderShips', 5, 45,0)" class="btn-light">
-                    +5
-                  </button>
                   <button onclick="incrementValue('defenderShips', -5, 45,0)" class="btn-light">
                     -5
+                  </button>
+                  <button onclick="incrementValue('defenderShips', 5, 45,0)" class="btn-light">
+                    +5
                   </button>
                 </div>
               </div>
@@ -209,11 +209,11 @@
                 <span class="big-num" id="defenderWeaponsDisplay">5+</span>
 
                 <div class="d-flex align-items-center">
-                  <button onclick="incrementValue('defenderWeapons', 1, 5,1)" class="weapon-shield-btn btn-light">
-                    +
-                  </button>
                   <button onclick="incrementValue('defenderWeapons', -1, 5,1)" class="weapon-shield-btn btn-light">
                     -
+                  </button>
+                  <button onclick="incrementValue('defenderWeapons', 1, 5,1)" class="weapon-shield-btn btn-light">
+                    +
                   </button>
                 </div>
               </div>
@@ -230,11 +230,11 @@
                 </div>
                 <span class="big-num" id="defenderShields">0</span>
                 <div class="d-flex align-items-center">
-                  <button onclick="incrementValue('defenderShields', 1, 4,0)" class="weapon-shield-btn btn-light">
-                    +
-                  </button>
                   <button onclick="incrementValue('defenderShields', -1, 4,0)" class="weapon-shield-btn btn-light">
                     -
+                  </button>
+                  <button onclick="incrementValue('defenderShields', 1, 4,0)" class="weapon-shield-btn btn-light">
+                    +
                   </button>
                 </div>
               </div>
