@@ -23,7 +23,7 @@ These are apps designed to enhance and speed up gameplay for [Star Trek Ascendan
 - Source Code: [GitHub](https://codesandbox.io/p/github/covertsonic/star_trek_ascendancy_apps/main)
 
 ## Installation and Usage
-Vanilla HTMl/CSS/JavaScript.  Just drop anywhere
+Vanilla HTMl/CSS/JavaScript.  Just drop anywhere and open in a browser.
 
 ## Contributing
 If you want to make changes, send me a pull request.
