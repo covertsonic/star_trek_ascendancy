@@ -35,9 +35,6 @@
   margin: 0 auto; /* Centering the text */
 }
 
-.begin {
-  /* Styles for the "Begin" button, if necessary */
-}
 
 /* Mobile styles */
 @media screen and (max-width: 767px) {
@@ -51,12 +48,6 @@
 
 
 /* Faction Selection Grid */
-.factions-grid {
-  /* display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;*/
-}
-
 .faction {
   cursor: pointer;
   position: relative;
