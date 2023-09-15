@@ -231,7 +231,11 @@ body {
   padding-left: 5px;
 }
 
-.mw-per-side {
+.min-width-per-side {
   min-width: 390px;
   /* ware are fortunate this is close to 384, half of the breakpoint of col-md which is 768 */
+}
+
+.max-page-width {
+  max-width: 875px;
 }
