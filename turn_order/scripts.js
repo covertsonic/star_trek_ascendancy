@@ -104,7 +104,8 @@ let selectedFactions = [];
 beginButton.addEventListener("click", () => {
   // Hide faction selection and show turn order section
   document.querySelector(".row.factions-grid").style.display = "none";
-  turnOrderSection.style.display = "block";
+  turnOrderSection.classList.remove("hidden");
+  
 
   // Hide the begin button
   $(beginButton).hide();
@@ -173,18 +174,28 @@ function randomizeNextTurnOrder() {
   const headerRow = table.querySelector("thead tr");
   const tableBody = table.querySelector("tbody");
 
+  // Hide the "current" indicator from all previous columns
+  const allCurrentIndicators = document.querySelectorAll(".current-indicator");
+  allCurrentIndicators.forEach(indicator => indicator.classList.add("hidden"));
+
   // Add new turn header
   const turnNumber = headerRow.cells.length; // Existing columns represent turns
   const turnHeader = document.createElement("th");
 
+  // Add the "current" indicator
+  const currentIndicator = document.createElement("div");
+  currentIndicator.className = "current-indicator";
+  currentIndicator.textContent = "Current";
+  turnHeader.appendChild(currentIndicator);
+
   const timestampSpan = document.createElement("span");
   timestampSpan.className = "time-stamp";
   timestampSpan.textContent = new Date().toLocaleTimeString([], {
-    hour: "2-digit",
-    minute: "2-digit"
+      hour: "2-digit",
+      minute: "2-digit"
   });
 
-  turnHeader.innerHTML = `T-${turnNumber} <br />`;
+  turnHeader.innerHTML += `T-${turnNumber} <br />`;
   turnHeader.appendChild(timestampSpan);
 
   headerRow.appendChild(turnHeader);
@@ -204,6 +215,15 @@ const shuffledFactions = shuffleArray([...factions]);  //A better approach would
     limitVisibleTurns();
   }
   reorderFactionsByCurrentRound();
+  showShowAllButton(headerRow);
+    
+}
+
+function showShowAllButton(headerRow){
+      // Check if there are at least 4 turns
+      if (headerRow.cells.length >= 5) { // +1 because of the Faction column
+        document.querySelector(".show-all-turns").classList.remove("invisible");
+    }
 }
 
 // Call this function and pass the turn column div when you create a new turn.
@@ -218,7 +238,8 @@ returnButton.addEventListener("click", () => {
 
     beginButton.style.display = "block";
     // Hide the turn-order-section
-    document.querySelector(".turn-order-section").style.display = "none";
+    document.querySelector(".turn-order-section").classList.add("hidden");
+
 
     // Hide the button-group
     //document.querySelector(".button-group-for-turn-order").style.display = "none";
@@ -417,3 +438,6 @@ function initializeFactionEventListeners() {
     });
   });
 }
+
+
+

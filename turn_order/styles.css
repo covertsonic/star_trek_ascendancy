@@ -140,9 +140,6 @@
   display: block;
 }
 
-.hidden {
-  display: none;
-}
 
 @keyframes glow {
   0% {
@@ -162,4 +159,30 @@
 
 .mr-10px {
   margin-right: 10px;
+}
+
+#turn-order-table thead th {
+  position: relative;
+}
+
+.current-indicator {
+  background-color: #007bff;
+  font-size: small;
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.invisible {
+  opacity: 0;
+  pointer-events: none; /* This ensures the button won't be clickable when invisible */
 }
