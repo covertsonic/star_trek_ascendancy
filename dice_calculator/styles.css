@@ -227,8 +227,13 @@ body {
 
 
 #probabilityWrapper {
-  width: 165px;
+  width: 170px;
   padding-left: 5px;
+}
+
+.bold-stat{
+  font-weight: bold;
+  color: black;
 }
 
 .min-width-per-side {
