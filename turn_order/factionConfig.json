@@ -45,13 +45,13 @@
     "fan-made": false
   },
   {
-    "name": "Bajoran Republic",
-    "image": "faction-bajoran-republic.png",
-    "fan-made": true
-  },
-  {
     "name": "Borg",
     "image": "faction-borg.png",
+    "fan-made": false
+  },
+  {
+    "name": "Bajoran Republic",
+    "image": "faction-bajoran-republic.png",
     "fan-made": true
   },
   {
