@@ -227,7 +227,7 @@ body {
 
 
 #probabilityWrapper {
-  width: 170px;
+  max-width: 165px;
   padding-left: 5px;
 }
 
