@@ -219,12 +219,14 @@ const shuffledFactions = shuffleArray([...factions]);  //A better approach would
     
 }
 
-function showShowAllButton(headerRow){
-      // Check if there are at least 4 turns
-      if (headerRow.cells.length >= 5) { // +1 because of the Faction column
-        document.querySelector(".show-all-turns").classList.remove("invisible");
-    }
+function showShowAllButton(headerRow) {
+  const hiddenColumns = Array.from(headerRow.cells).filter(cell => cell.style.display === "none");
+
+  if (hiddenColumns.length > 0) {
+      document.querySelector(".show-all-turns").classList.remove("invisible");
+  }
 }
+
 
 // Call this function and pass the turn column div when you create a new turn.
 
@@ -232,6 +234,11 @@ let confirmReset = false;
 
 returnButton.addEventListener("click", () => {
   if (confirmReset) {
+    //hide the Show All turns button
+    document.querySelector(".show-all-turns").classList.add("invisible");
+    localStorage.setItem("showOldTurns", false); //default to hiding excess turns
+    //limitVisibleTurns(); //not required
+
     // Reset the turn-order-table
     document.querySelector("#turn-order-table tbody").innerHTML = "";
     resetTableHeader();
@@ -239,10 +246,6 @@ returnButton.addEventListener("click", () => {
     beginButton.style.display = "block";
     // Hide the turn-order-section
     document.querySelector(".turn-order-section").classList.add("hidden");
-
-
-    // Hide the button-group
-    //document.querySelector(".button-group-for-turn-order").style.display = "none";
 
     // Show the row factions-grid
     document.querySelector(".row.factions-grid").style.display = "flex";

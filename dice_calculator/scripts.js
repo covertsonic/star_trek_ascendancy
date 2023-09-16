@@ -309,7 +309,7 @@ function confirmReset() {
     resetButton.setAttribute("data-confirm", "true");
 
     // Set a timeout to reset the button after 3 seconds
-    setTimeout(function() {
+    setTimeout(function () {
       if (resetButton.getAttribute("data-confirm") === "true") { // Check if the button is still in the confirm state
         resetButtonToInitialState(resetButton);
       }
@@ -851,7 +851,7 @@ function handleReroll(side) {
   }
   scrollToElement(roundCounter, side);
 
-  
+
   updateStats();//update win probabilities and expected hits after a reroll is complete
 }
 
@@ -874,6 +874,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
+
+function switchState(targetState) {
+  // Hide all states
+  document.getElementById('showProbabilitiesState').style.display = 'none';
+  document.getElementById('existingCodeState').style.display = 'none';
+  document.getElementById('verboseExplanationState').style.display = 'none';
+
+  // Show the target state
+  document.getElementById(targetState).style.display = 'block';
+}
+
 function calculateExpectedHits(ships, weaponLevel, opponentShieldLevel, hasStarbase = false) {
   let expectedHits = 0;
   let hitProbability = (7 - (6 - weaponLevel + opponentShieldLevel)) / 6;
@@ -887,39 +898,91 @@ function calculateExpectedHits(ships, weaponLevel, opponentShieldLevel, hasStarb
   return expectedHits;
 }
 
-
-function switchState(targetState) {
-  // Hide all states
-  document.getElementById('showProbabilitiesState').style.display = 'none';
-  document.getElementById('existingCodeState').style.display = 'none';
-  document.getElementById('verboseExplanationState').style.display = 'none';
-
-  // Show the target state
-  document.getElementById(targetState).style.display = 'block';
+function canHit(weaponLevel, opponentShieldLevel) {
+  return (7 - (6 - weaponLevel + opponentShieldLevel)) / 6;
 }
 
+function simulateBattle(attackerShips, attackerHitProb, defenderShips, defenderHitProb, isStarbaseActive) {
+  while (attackerShips > 0 && defenderShips > 0) {
+    let attackerHits = 0;
+    let defenderHits = 0;
 
+    for (let i = 0; i < attackerShips; i++) {
+      if (Math.random() < attackerHitProb) {
+        attackerHits++;
+      }
+    }
 
-//Secttions below to give stats prior to rolling
-function calculateWinProbability(attackerShips, defenderShips, attackerExpectedHits, defenderExpectedHits) {
-  let attackerWinProb = 0;
-  let defenderWinProb = 0;
+    let defenderDice = defenderShips;
+    if (isStarbaseActive && defenderShips > 0) {
+      defenderDice++;
+    }
 
-  if (attackerExpectedHits > defenderShips && defenderExpectedHits < attackerShips) {
-    attackerWinProb = 100;
-  } else if (defenderExpectedHits > attackerShips && attackerExpectedHits < defenderShips) {
-    defenderWinProb = 100;
-  } else {
-    let totalHits = attackerExpectedHits + defenderExpectedHits;
-    attackerWinProb = (attackerExpectedHits / totalHits) * 100;
-    defenderWinProb = 100 - attackerWinProb;
+    for (let i = 0; i < defenderDice; i++) {
+      if (Math.random() < defenderHitProb) {
+        defenderHits++;
+      }
+    }
+
+    attackerShips -= defenderHits;
+    defenderShips -= attackerHits;
   }
 
-  return {
-    attacker: attackerWinProb,
-    defender: defenderWinProb
-  };
+  if (attackerShips > 0 && defenderShips <= 0) return 'attacker';
+  if (defenderShips > 0 && attackerShips <= 0) return 'defender';
+  return 'tie'; // Add this line for the tie scenario.
+
 }
+
+function calculateWinProbability(attackerShips = 5, attackerWeapons = 1, attackerShields = 0,
+  defenderShips = 5, defenderWeapons = 1, defenderShields = 0, isStarbaseActive = 0, excludeTies = true) {
+
+
+  const attackerHitProb = canHit(attackerWeapons, defenderShields);
+  const defenderHitProb = canHit(defenderWeapons, attackerShields);
+  if (attackerHitProb <= 0 && defenderHitProb <= 0) return { attacker: 0, defender: 0 };
+  if (attackerHitProb <= 0) return { attacker: 0, defender: 100 };
+  if (defenderHitProb <= 0) return { attacker: 100, defender: 0 };
+  
+  //don't use the simulation if all stats are the same
+  if ((attackerShips === defenderShips) && isStarbaseActive === false && (attackerHitProb === defenderHitProb)) {
+    return {attacker: 50, defender: 50  }
+  }
+
+  let simulations = 100000;
+  let attackerWins = 0;
+  let defenderWins = 0;
+  let ties = 0;
+  const start = performance.now(); // Start the timer
+
+  for (let i = 0; i < simulations; i++) {
+    let result = simulateBattle(attackerShips, attackerHitProb, defenderShips, defenderHitProb, isStarbaseActive);
+    if (result === 'attacker') {
+      attackerWins++;
+    } else if (result === 'defender') {
+      defenderWins++;
+    } else {
+      ties++
+    }
+  }
+
+  const end = performance.now(); // Stop the timer
+  //console.log(`Probability simulation took ${(end - start).toFixed(2)} milliseconds.`);
+  
+  if (excludeTies === true) {
+    return {
+      attacker: (attackerWins / (simulations - ties)) * 100,
+      defender: (defenderWins / (simulations - ties)) * 100
+    };
+  }
+  return {
+    attacker: (attackerWins / simulations) * 100,
+    defender: (defenderWins / simulations) * 100,
+    tie: (1 - (attackerWins + defenderWins) / simulations) * 100  // Add the probability of a tie
+  };
+
+}
+
 
 function updateStats() {
   let attackerShips = parseInt(document.getElementById("attackerShips").innerText, 10);
@@ -932,15 +995,18 @@ function updateStats() {
   // Check if the starbase is active
   const isStarbaseActive = !document.getElementById("starbaseButton").classList.contains("frosted");
 
+  let winProbabilities = calculateWinProbability(attackerShips, attackerWeapons, attackerShields, defenderShips, defenderWeapons, defenderShields, isStarbaseActive);
+  ;
+
   let attackerExpectedHits = calculateExpectedHits(attackerShips, attackerWeapons, defenderShields);
   let defenderExpectedHits = calculateExpectedHits(defenderShips, defenderWeapons, attackerShields, isStarbaseActive);
 
-  let winProbabilities = calculateWinProbability(attackerShips, defenderShips, attackerExpectedHits, defenderExpectedHits);
-
   document.getElementById("attackerExpectedHits").innerText = attackerExpectedHits.toFixed(2);
   document.getElementById("defenderExpectedHits").innerText = defenderExpectedHits.toFixed(2);
-  document.getElementById("attackerWinProb").innerText = winProbabilities.attacker.toFixed(2) + '%';
-  document.getElementById("defenderWinProb").innerText = winProbabilities.defender.toFixed(2) + '%';
+
+  document.getElementById("attackerWinProb").innerText = winProbabilities.attacker.toFixed(0) + '%';
+  document.getElementById("defenderWinProb").innerText = winProbabilities.defender.toFixed(0) + '%';
+  return true;
 }
 
 updateStats();

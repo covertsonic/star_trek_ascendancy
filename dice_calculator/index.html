@@ -38,11 +38,13 @@
               <div id="existingCodeState" style="display: none; cursor: pointer;"
                 onclick="switchState('verboseExplanationState')">
                 <div class="probabilities">
-                  <span class="text-muted small mr-2">&nbsp; Exp Hits: <span id="attackerExpectedHits">X</span> | <span
-                      id="defenderExpectedHits">Y</span></span>
+                  <span class="text-muted small mr-2">&nbsp; Exp Hits: 
+                    <span id="attackerExpectedHits" class="bold-stat">X</span> A | <span
+                      id="defenderExpectedHits" class="bold-stat">Y</span> D</span>
                   <br />
-                  <span class="text-muted small mr-2">&nbsp; Win %: <span id="attackerWinProb">A%</span> | <span
-                      id="defenderWinProb">B%</span></span>
+                  <span class="text-muted small mr-2">&nbsp; Win Prob: 
+                    <span id="attackerWinProb" class="bold-stat">A%</span> A | <span
+                      id="defenderWinProb" class="bold-stat">B%</span> D</span>
                 </div>
               </div>
 
