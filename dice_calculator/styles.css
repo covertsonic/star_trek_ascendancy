@@ -36,24 +36,35 @@
 }
 
 .starbase-text{
+  margin-top:5px;
   margin-left: 5px;
-  line-height: .5;
+  line-height: 1;
 }
 
 .starbase-die-count {
   margin-left: 5px;
   font-weight: bold;
+  line-height: 1;
   color: #007bff;
 }
 
 
 .starbase-button {
   cursor: pointer;
+  width: 128px;
+  margin-left:10px;
 }
 
 .starbase-button object {
   pointer-events: none;
   /* This makes sure the SVG doesn't capture the event */
+}
+
+.text-extra-muted{
+  color: #b0b5b9;
+}
+.underline-on-hover:hover {
+  text-decoration: underline;
 }
 
 /* Add your other styles here */
