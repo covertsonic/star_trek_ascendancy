@@ -13,7 +13,9 @@
   border: none;
   cursor: pointer;
   display: flex;
-  align-items: center;
+  align-items: center; 
+  width: 150px;
+  margin-left:10px;
   /* Vertically aligns the items */
 }
 
@@ -49,11 +51,6 @@
 }
 
 
-.starbase-button {
-  cursor: pointer;
-  width: 128px;
-  margin-left:10px;
-}
 
 .starbase-button object {
   pointer-events: none;
