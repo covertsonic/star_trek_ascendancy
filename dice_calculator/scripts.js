@@ -258,8 +258,10 @@ function resetCombat() {
   //remove startbase
   const starbaseButton = document.getElementById("starbaseButton");
   const starbaseDieCount = starbaseButton.querySelector(".starbase-die-count");
+  const starbaseText = starbaseButton.querySelector(".starbase-text");
   starbaseButton.classList.add("frosted");
   starbaseDieCount.textContent = "+0 die";
+  starbaseText.textContent = "no starbase";
 
   rerollReminderToggle();//handle reroll reminder after round reset
   updateStats();//update the win probabilities after round reset
@@ -857,15 +859,18 @@ function handleReroll(side) {
 
 document.addEventListener("DOMContentLoaded", function () {
   const starbaseButton = document.getElementById("starbaseButton");
+  const starbaseText = starbaseButton.querySelector(".starbase-text");
   const starbaseDieCount = starbaseButton.querySelector(".starbase-die-count");
 
   starbaseButton.addEventListener("click", function () {
     if (starbaseButton.classList.contains("frosted")) {
       starbaseButton.classList.remove("frosted");
       starbaseDieCount.textContent = "+1 die";
+      starbaseText.textContent = "has starbase";
     } else {
       starbaseButton.classList.add("frosted");
       starbaseDieCount.textContent = "+0 die";
+      starbaseText.textContent = "no starbase";
     }
 
     updateStats();//update the win probabilities after starbase on/off changes
