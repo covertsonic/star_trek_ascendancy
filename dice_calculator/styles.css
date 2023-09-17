@@ -35,7 +35,11 @@
   height: 40px;
 }
 
-.starbase-text,
+.starbase-text{
+  margin-left: 5px;
+  line-height: .5;
+}
+
 .starbase-die-count {
   margin-left: 5px;
   font-weight: bold;
