@@ -67,6 +67,21 @@
   text-decoration: underline;
 }
 
+/* this is needed because the ship icons are 24px and the font-awesome icons are 16px */
+/* so that the big-num's are aligned exactly right*/
+.mb-8px{ 
+  padding-bottom: 8px;
+}
+
+/* this is if we want to use larger font-awesomes */
+        .icon-large {
+            font-size: 24px;
+            width: 24px;
+            height: 24px;
+            display: inline-block;
+            text-align: center;
+            vertical-align: middle;
+        }
 /* Add your other styles here */
 
 
