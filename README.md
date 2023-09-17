@@ -2,15 +2,13 @@
 
 These are apps designed to enhance and speed up gameplay for [Star Trek Ascendancy](https://boardgamegeek.com/boardgame/193949/star-trek-ascendancy), a strategy board game for 1-9 players. These apps are particularly useful for the Dominion War variant with large fleet sizes and at least four players.
 
-## Apps and Features
-
-### Combat Dice Calculator
-![Combat Dice Calculator - Live Version](https://camo.githubusercontent.com/a1ae4d2cc62d16a89126d6c13463524703b36cd86dde3cb9830ad8ff8c799546/68747470733a2f2f7a36706e68352d353030302e6373622e6170702f66617669636f6e2f707265766965772d646963652d63616c63756c61746f722e706e67)
+## Combat Dice Calculator
+![Combat Dice Calculator - Live Version](https://y9lp5n-5000.csb.app/favicon/preview-dice-calculator-2.png)
 - Streamlines the rolling of dice for large fleet battles
 - Handles ships, starbases, weapons, shields
 - Simplifies rerolls
 
-### Turn Order Randomizer
+## Turn Order Randomizer
 ![Turn Order Randomizer - Live Version](https://camo.githubusercontent.com/0bae5f14ec38f0592037c606c03d2da7f60293ba0e1415589c513ac6fb2b7f5b/68747470733a2f2f7a36706e68352d353030302e6373622e6170702f66617669636f6e2f707265766965772d7475726e2d6f726465722e706e67)
 - Beautiful turn order randomization
 - Supports the 9 official factions
