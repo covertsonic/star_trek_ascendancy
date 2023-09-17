@@ -9,7 +9,7 @@ These are apps designed to enhance and speed up gameplay for [Star Trek Ascendan
 - Simplifies rerolls
 
 ## Turn Order Randomizer
-![Turn Order Randomizer - Live Version](https://camo.githubusercontent.com/0bae5f14ec38f0592037c606c03d2da7f60293ba0e1415589c513ac6fb2b7f5b/68747470733a2f2f7a36706e68352d353030302e6373622e6170702f66617669636f6e2f707265766965772d7475726e2d6f726465722e706e67)
+![Turn Order Randomizer - Live Version](https://y9lp5n-5000.csb.app/favicon/preview-turn-order-2.png)
 - Beautiful turn order randomization
 - Supports the 9 official factions
 - Supports 11 fan-made factions
