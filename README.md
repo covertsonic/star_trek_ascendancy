@@ -11,8 +11,8 @@ These are apps designed to enhance and speed up gameplay for [Star Trek Ascendan
 ## Turn Order Randomizer
 ![Turn Order Randomizer - Live Version](https://covertsonic.github.io/star_trek_ascendancy/favicon/preview-turn-order-2.png)
 - Beautiful turn order randomization
-- Supports the 9 official factions
-- Supports 11 fan-made factions
+- Supports the 9 official player factions plus the Borg
+- Supports addiional 10 fan-made factions
 - Uses the Fisher-Yates Shuffle algorithm
 - Special thanks to DevKev and Marcin for the artwork from [this Tabletop Simulator mod](https://steamcommunity.com/sharedfiles/filedetails/?id=1559499743).
 
